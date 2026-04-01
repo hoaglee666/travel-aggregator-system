@@ -1,0 +1,13 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS" /* Change this from ESNext/NodeNext */,
+    "moduleResolution": "node" /* Change this from NodeNext/Node16 */,
+    "outDir": "./dist" /* Good practice to set your build folder */,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
