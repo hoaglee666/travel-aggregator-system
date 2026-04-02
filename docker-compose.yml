@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  # 1. The Database Container
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: aggregator-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Jkl01226255@"
+    ports:
+      - "1433:1433"
+
+  # 2. The Backend Node.js Container
+  backend:
+    build: ./backend
+    container_name: aggregator-backend
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_USER=sa
+      - DB_PASSWORD=Jkl01226255@
+      # CRITICAL: We use 'db' here instead of 'localhost' because Docker handles the internal network!
+      - DB_SERVER=db
+      - DB_NAME=AggregatorDB
+      - DB_PORT=1433
+    depends_on:
+      - db # Wait for the database to start before starting the backend
+
+  # 3. The Frontend Angular Container
+  frontend:
+    build: ./frontend
+    container_name: aggregator-frontend
+    ports:
+      - "4200:80" # Maps your computer's 4200 to the container's Nginx port 80
+    depends_on:
+      - backend
