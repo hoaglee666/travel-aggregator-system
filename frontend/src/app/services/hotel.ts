@@ -27,4 +27,8 @@ export class HotelService {
       .set('targetPrice', targetPrice.toString());
     return this.http.get(`${this.apiUrl}/alerts/register`, { params });
   }
+
+  getUserAlerts(email: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/alerts/user/${email}`);
+  }
 }

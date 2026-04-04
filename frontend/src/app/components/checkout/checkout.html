@@ -1,0 +1,66 @@
+<div class="min-h-screen bg-gray-50">
+  <header class="bg-gray-900 text-white p-4 shadow-md">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">{{ provider }}</h1>
+      <span class="text-sm text-gray-400">Secure Checkout</span>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto mt-8 p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-sm border">
+      <div *ngIf="!isBooked">
+        <h2 class="text-xl font-bold mb-6 text-gray-800">Guest Details</h2>
+        <form [formGroup]="checkoutForm" (ngSubmit)="onConfirmBooking()" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Lead Guest Name</label>
+            <input
+              type="text"
+              formControlName="guestName"
+              class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Credit Card Number (Demo)</label
+            >
+            <input
+              type="text"
+              formControlName="cardNumber"
+              placeholder="1234 5678 9101 1121"
+              class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg mt-6 transition duration-200"
+          >
+            Confirm Booking
+          </button>
+        </form>
+      </div>
+
+      <div *ngIf="isBooked" class="text-center py-10">
+        <div class="text-5xl mb-4">🎉</div>
+        <h2 class="text-2xl font-bold text-green-600 mb-2">Booking Confirmed!</h2>
+        <p class="text-gray-600 mb-6">
+          Your room at {{ hotelName }} has been secured via {{ provider }}.
+        </p>
+        <a routerLink="/search" class="text-blue-600 hover:underline"
+          >Return to Aggregator Search</a
+        >
+      </div>
+    </div>
+
+    <div class="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-100 h-fit">
+      <h3 class="font-bold text-gray-800 border-b pb-2 mb-4">Booking Summary</h3>
+      <p class="text-lg font-semibold text-gray-800 mb-1">{{ hotelName }}</p>
+      <p class="text-sm text-gray-500 mb-4">Provided by {{ provider }}</p>
+
+      <div class="flex justify-between items-center pt-4 border-t border-blue-200">
+        <span class="font-semibold text-gray-700">Total Price: </span>
+        <span class="text-xl font-bold text-green-600">{{ price | number }} ₫</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -64,7 +64,10 @@
             <p class="text-2xl font-bold text-green-600">{{ hotel.price | number }} ₫</p>
 
             <div class="flex flex-col gap-2 mt-2">
-              <button class="text-sm bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700">
+              <button
+                (click)="onViewDeal(hotel)"
+                class="text-sm bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700"
+              >
                 View Deal
               </button>
 
@@ -79,6 +82,188 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="isAlertModalOpen"
+  style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+  "
+>
+  <div
+    style="
+      background-color: #1e293b;
+      width: 100%;
+      max-width: 28rem;
+      border-radius: 1rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      font-family: sans-serif;
+    "
+  >
+    <div
+      style="
+        background-color: #ea580c;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
+      <h3
+        style="
+          margin: 0;
+          color: white;
+          font-size: 1.25rem;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        "
+      >
+        <span>🔔</span> Set Price Alert
+      </h3>
+      <button
+        (click)="closeAlertModal()"
+        style="
+          background: none;
+          border: none;
+          color: white;
+          font-size: 1.5rem;
+          cursor: pointer;
+          padding: 0;
+          line-height: 1;
+        "
+      >
+        &times;
+      </button>
+    </div>
+
+    <div style="padding: 1.5rem">
+      <p style="color: #cbd5e1; margin-top: 0; margin-bottom: 1.25rem; line-height: 1.5">
+        We will notify you when
+        <span style="color: white; font-weight: bold">{{ selectedHotel?.name }}</span>
+        drops to your target price.
+      </p>
+
+      <div
+        style="
+          background-color: #334155;
+          border: 1px solid #475569;
+          border-radius: 0.5rem;
+          padding: 1rem;
+          margin-bottom: 1.5rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <span style="color: #94a3b8; font-size: 0.875rem; font-weight: 500">Current Price:</span>
+        <span style="color: white; font-size: 1.125rem; font-weight: bold"
+          >{{ selectedHotel?.price | number }} ₫</span
+        >
+      </div>
+
+      <form [formGroup]="alertForm" (ngSubmit)="submitPriceAlert()" style="margin: 0">
+        <label
+          style="
+            display: block;
+            color: #cbd5e1;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+          "
+          >Your Target Price (VND)</label
+        >
+
+        <div style="position: relative">
+          <input
+            type="number"
+            formControlName="targetPrice"
+            style="
+              width: 100%;
+              box-sizing: border-box;
+              background-color: #0f172a;
+              border: 1px solid #475569;
+              color: #22c55e;
+              font-size: 1.25rem;
+              font-weight: bold;
+              padding: 0.75rem 1rem;
+              border-radius: 0.5rem;
+              outline: none;
+            "
+          />
+          <div
+            style="
+              position: absolute;
+              right: 1rem;
+              top: 50%;
+              transform: translateY(-50%);
+              color: #64748b;
+              font-weight: bold;
+            "
+          >
+            ₫
+          </div>
+        </div>
+
+        <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.5rem; margin-bottom: 0">
+          Tip: We suggest aiming for 10% below the current price.
+        </p>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 2rem">
+          <button
+            type="button"
+            (click)="closeAlertModal()"
+            style="
+              flex: 1;
+              padding: 0.75rem 1rem;
+              background-color: transparent;
+              border: 1px solid #64748b;
+              color: #cbd5e1;
+              font-weight: bold;
+              border-radius: 0.5rem;
+              cursor: pointer;
+              transition: background-color 0.2s;
+            "
+            onmouseover="this.style.backgroundColor = '#334155'"
+            onmouseout="this.style.backgroundColor = 'transparent'"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            [disabled]="alertForm.invalid"
+            style="
+              flex: 1;
+              padding: 0.75rem 1rem;
+              background-color: #ea580c;
+              border: none;
+              color: white;
+              font-weight: bold;
+              border-radius: 0.5rem;
+              cursor: pointer;
+            "
+            [style.opacity]="alertForm.invalid ? '0.5' : '1'"
+          >
+            Confirm Alert
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

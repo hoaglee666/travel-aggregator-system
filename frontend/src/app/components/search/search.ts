@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HotelService } from '../../services/hotel';
 import { Hotel } from '../../models/hotel.model';
 import { AuthService } from '../../services/auth';
@@ -20,6 +20,10 @@ export class SearchComponent implements OnInit {
   userEmail = '';
   regions = REGION_LIST;
 
+  isAlertModalOpen = false;
+  selectedHotel: Hotel | null = null;
+  alertForm: FormGroup;
+
   constructor(
     private fb: FormBuilder,
     private hotelService: HotelService,
@@ -29,6 +33,10 @@ export class SearchComponent implements OnInit {
     this.searchForm = this.fb.group({
       destination: ['Da Lat'], // Default value
       sort: ['price'], // Default strategy
+    });
+
+    this.alertForm = this.fb.group({
+      targetPrice: [0, [Validators.required, Validators.min(1)]], // <-- Add the inner brackets!
     });
   }
 
@@ -67,19 +75,47 @@ export class SearchComponent implements OnInit {
   }
 
   onTrackPrice(hotel: Hotel): void {
-    const suggestedPrice = Math.floor(hotel.price * 0.9);
-    const userInput = prompt(
-      `Set your target price for ${hotel.name}.\nCurrent price: ${hotel.price} ₫`,
-      suggestedPrice.toString(),
-    );
+    console.log('✅ Button clicked! Opening modal for:', hotel.name);
 
-    if (userInput) {
-      const targetPrice = parseInt(userInput, 10);
+    this.selectedHotel = hotel;
+    const suggestedPrice = Math.floor(hotel.price * 0.9); // 10% off
+    this.alertForm.patchValue({ targetPrice: suggestedPrice });
 
-      this.hotelService.setPriceAlerts(this.userEmail, hotel.hotelId, targetPrice).subscribe({
-        next: (res) => alert(`✅ Success! ${res.message}`),
-        error: (err) => alert('❌ Failed to set price alert.'),
+    // THE ESCAPE HATCH: Force Angular to process this on the next exact frame
+    setTimeout(() => {
+      this.isAlertModalOpen = true;
+      this.cdr.detectChanges();
+    }, 0);
+  }
+
+  closeAlertModal(): void {
+    this.isAlertModalOpen = false;
+    this.selectedHotel = null;
+    this.cdr.detectChanges();
+  }
+
+  submitPriceAlert(): void {
+    if (this.alertForm.invalid || !this.selectedHotel) return;
+
+    const targetPrice = this.alertForm.value.targetPrice;
+
+    this.hotelService
+      .setPriceAlerts(this.userEmail, this.selectedHotel.hotelId, targetPrice)
+      .subscribe({
+        next: (res) => {
+          alert(`✅ Success! ${res.message}`); // We can change this to a nice toast later if you want!
+          this.closeAlertModal();
+        },
+        error: (err) => {
+          alert('❌ Failed to set price alert.');
+          this.closeAlertModal();
+        },
       });
-    }
+  }
+
+  onViewDeal(hotel: Hotel): void {
+    const trackingUrl = `http://localhost:3000/api/redirect?hotelId=${hotel.hotelId}&provider=${hotel.provider}&price=${hotel.price}&name=${encodeURIComponent(hotel.name)}`;
+
+    window.open(trackingUrl, '_blank');
   }
 }

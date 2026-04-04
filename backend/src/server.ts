@@ -6,6 +6,7 @@ import { connectDB } from "./config/database";
 import searchRoutes from "./routes/searchRoutes";
 import alertRoutes from "./routes/alertRoutes";
 import authRoutes from "./routes/authRoutes";
+import redirectRoutes from "./routes/redirectRoutes";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(express.json()); // Parses incoming JSON payloads
 app.use("/api", searchRoutes);
 app.use("/api", alertRoutes);
 app.use("/api", authRoutes);
+app.use("/api", redirectRoutes);
 // A simple test route
 app.get("/api/health", (req: Request, res: Response) => {
   res.status(200).json({
