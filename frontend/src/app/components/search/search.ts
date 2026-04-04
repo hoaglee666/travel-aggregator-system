@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { HotelService } from '../../services/hotel';
@@ -23,6 +23,7 @@ export class SearchComponent implements OnInit {
     private fb: FormBuilder,
     private hotelService: HotelService,
     private authService: AuthService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.searchForm = this.fb.group({
       destination: ['Da Lat'], // Default value
@@ -54,10 +55,12 @@ export class SearchComponent implements OnInit {
       next: (data) => {
         this.hotels = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('API Error:', err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
     });
   }
