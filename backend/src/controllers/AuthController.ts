@@ -10,7 +10,7 @@ export const registerUser = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { email, password, fullName } = req.body;
+    const { email, password, fullName, phoneNumber, creditCard } = req.body;
 
     if (!email || !password) {
       res
@@ -41,9 +41,11 @@ export const registerUser = async (
     await request
       .input("newEmail", sql.VarChar, email)
       .input("passwordHash", sql.VarChar, passwordHash)
-      .input("fullName", sql.VarChar, fullName || "New User").query(`
-                INSERT INTO USERS (email, password, full_name)
-                VALUES (@newEmail, @passwordHash, @fullName)
+      .input("fullName", sql.VarChar, fullName || "New User")
+      .input("phoneNumber", sql.VarChar, phoneNumber || "")
+      .input("creditCard", sql.VarChar, creditCard || "").query(`
+                INSERT INTO USERS (email, password, full_name, phone_number, credit_card)
+                VALUES (@newEmail, @passwordHash, @fullName, @phoneNumber, @creditCard)
             `);
 
     res

@@ -31,4 +31,8 @@ export class HotelService {
   getUserAlerts(email: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/alerts/user/${email}`);
   }
+
+  removeUserAlert(alertId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/alerts/${alertId}`);
+  }
 }

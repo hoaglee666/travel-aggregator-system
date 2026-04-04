@@ -88,3 +88,24 @@ export const triggerPriceDrop = async (
     message: `Simulated price drop for ${hotelId} down to ${newPrice} VND. Check console logs for emails!`,
   });
 };
+
+export const deleteAlert = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const alertId = req.params.alertId;
+    const request = new sql.Request();
+
+    await request
+      .input("alertId", sql.Int, alertId)
+      .query("UPDATE PRICE_ALERTS SET is_active = 0 WHERE alert_id = @alertId");
+
+    res
+      .status(200)
+      .json({ success: true, message: "Alert removed successfully" });
+  } catch (error) {
+    console.error("[Alerts] Delete Error:", error);
+    res.status(500).json({ success: false, message: "Failed to remove alert" });
+  }
+};

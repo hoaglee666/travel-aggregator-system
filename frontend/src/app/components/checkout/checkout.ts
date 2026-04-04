@@ -24,7 +24,11 @@ export class CheckoutComponent implements OnInit {
   ) {
     this.checkoutForm = this.fb.group({
       guestName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', Validators.required],
       cardNumber: ['', [Validators.required, Validators.minLength(16)]],
+      checkInDate: ['', Validators.required],
+      checkOutDate: ['', Validators.required],
     });
   }
 
@@ -35,10 +39,22 @@ export class CheckoutComponent implements OnInit {
       this.hotelName = params['hotel'] || 'Selected Hotel';
       this.price = params['price'] || '0';
     });
+
+    const userDataString = localStorage.getItem('user_data');
+    if (userDataString) {
+      const user = JSON.parse(userDataString);
+      this.checkoutForm.patchValue({
+        guestName: user.fullName || '',
+        email: user.email || '',
+        phoneNumber: user.phone_number || '',
+        cardNumber: user.credit_card || '',
+      });
+    }
   }
 
   onConfirmBooking(): void {
     if (this.checkoutForm.valid) {
+      //bookingservice to deduce the balance
       this.isBooked = true;
     } else {
       this.checkoutForm.markAllAsTouched();

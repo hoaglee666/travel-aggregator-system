@@ -48,4 +48,18 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
+
+  // Add this method inside your DashboardComponent class
+  removeAlert(alertId: number): void {
+    if (confirm('Are you sure you want to stop tracking this hotel?')) {
+      this.hotelService.removeUserAlert(alertId).subscribe({
+        next: () => {
+          // Instantly remove it from the UI without reloading the page
+          this.trackedHotels = this.trackedHotels.filter((a) => a.alert_id !== alertId);
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Failed to remove alert', err),
+      });
+    }
+  }
 }

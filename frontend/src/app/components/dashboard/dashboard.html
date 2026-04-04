@@ -35,7 +35,12 @@
             </p>
             <h2 class="text-xl font-bold text-gray-800">Hotel ID: {{ alert.hotel_id }}</h2>
           </div>
-          <button class="text-gray-400 hover:text-red-500 transition">✖ Remove</button>
+          <button
+            (click)="removeAlert(alert.alert_id)"
+            class="text-gray-400 hover:text-red-500 transition"
+          >
+            ✖ Remove
+          </button>
         </div>
       </div>
 

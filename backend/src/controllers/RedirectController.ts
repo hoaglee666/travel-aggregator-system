@@ -12,12 +12,15 @@ export const trackAndRedirect = async (
     const provider = req.query.provider as string;
     const price = req.query.price as string;
     const name = req.query.name as string;
+
+    const frontendUrl =
+      (req.query.frontend as string) || "http://localhost:4200";
     // 1. Log the outbound click for Affiliate Analytics (Using our Singleton!)
     logger.logInfo(
       `[AFFILIATE TRACKING] Outbound click to ${provider} | Hotel ID: ${hotelId} | Price: ${price} VND`,
     );
 
-    const partnerUrl = `http://localhost:4200/checkout?provider=${encodeURIComponent(provider)}&hotel=${encodeURIComponent(name)}&price=${price}`;
+    const partnerUrl = `${frontendUrl}/checkout?provider=${encodeURIComponent(provider)}&hotel=${encodeURIComponent(name)}&price=${price}`;
 
     // 2. Determine the partner's base URL
     // let partnerUrl = "";

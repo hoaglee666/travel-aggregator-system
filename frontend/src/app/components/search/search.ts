@@ -144,7 +144,9 @@ export class SearchComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-    const trackingUrl = `http://localhost:3000/api/redirect?hotelId=${hotel.hotelId}&provider=${hotel.provider}&price=${hotel.price}&name=${encodeURIComponent(hotel.name)}`;
+    const currentFrontendUrl = window.location.origin;
+
+    const trackingUrl = `http://localhost:3000/api/redirect?hotelId=${hotel.hotelId}&provider=${hotel.provider}&price=${hotel.price}&name=${encodeURIComponent(hotel.name)}&frontend=${encodeURIComponent(currentFrontendUrl)}`;
 
     window.open(trackingUrl, '_blank');
   }

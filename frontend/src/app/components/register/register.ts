@@ -35,6 +35,8 @@ export class RegisterComponent {
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', [Validators.required]],
+        phoneNumber: ['', Validators.required],
+        creditCard: ['', [Validators.required, Validators.minLength(16), Validators.maxLength(16)]],
       },
       { validators: this.passwordsMatchValidator },
     );

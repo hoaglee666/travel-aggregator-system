@@ -96,3 +96,25 @@
 [INFO] 2026-04-04T08:47:32.504Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1018 | Price: 893279 VND
 [INFO] 2026-04-04T08:48:27.457Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1018 | Price: 893279 VND
 [INFO] 2026-04-04T08:50:24.842Z - [AFFILIATE TRACKING] Outbound click to Booking.com | Hotel ID: BK-3021 | Price: 1808018 VND
+[INFO] 2026-04-04T08:52:20.151Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:52:28.255Z - [Observer] New Price Alert registered.
+[INFO] 2026-04-04T08:52:30.998Z - [AFFILIATE TRACKING] Outbound click to Expedia | Hotel ID: EXP-8018 | Price: 1000000 VND
+[INFO] 2026-04-04T08:57:27.743Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:57:46.139Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1030 | Price: 4927616 VND
+[INFO] 2026-04-04T08:58:41.112Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1030 | Price: 4927616 VND
+[INFO] 2026-04-04T09:00:14.522Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1030 | Price: 4927616 VND
+[INFO] 2026-04-04T09:06:31.906Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:07:02.915Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:11:21.289Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:11:39.963Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:13:13.310Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:14:18.389Z - [Observer] New Price Alert registered.
+[INFO] 2026-04-04T09:16:00.427Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:16:10.164Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:16:35.385Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:19:06.810Z - [AFFILIATE TRACKING] Outbound click to Trip.com | Hotel ID: TRIP-5014 | Price: 1075000 VND
+[INFO] 2026-04-04T09:24:25.637Z - [AFFILIATE TRACKING] Outbound click to Trip.com | Hotel ID: TRIP-5014 | Price: 1075000 VND
+[INFO] 2026-04-04T09:28:42.959Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:32:44.073Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:34:46.748Z - --- Logger Initialized ---
+[INFO] 2026-04-04T09:38:41.100Z - --- Logger Initialized ---
