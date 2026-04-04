@@ -7,6 +7,7 @@ import { CheckoutComponent } from './components/checkout/checkout';
 import { adminGuard } from './guards/admin-guard'; // 1. Import the Guard
 import { AdminComponent } from './components/admin/admin';
 import { authGuard } from './guards/auth.guard';
+import { ProfileComponent } from './components/profile/profile';
 export const routes: Routes = [
   { path: '', redirectTo: '/search', pathMatch: 'full' },
 
@@ -27,4 +28,5 @@ export const routes: Routes = [
     canActivate: [authGuard], // 3. Apply the lock
   },
   { path: 'admin', component: AdminComponent, canActivate: [adminGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
 ];

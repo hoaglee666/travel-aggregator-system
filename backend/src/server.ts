@@ -8,6 +8,7 @@ import alertRoutes from "./routes/alertRoutes";
 import authRoutes from "./routes/authRoutes";
 import redirectRoutes from "./routes/redirectRoutes";
 import adminRoutes from "./routes/adminRoutes";
+import profileRoutes from "./routes/profileRoutes";
 dotenv.config();
 
 const app: Application = express();
@@ -23,6 +24,7 @@ app.use("/api", alertRoutes);
 app.use("/api", authRoutes);
 app.use("/api", redirectRoutes);
 app.use("/api", adminRoutes);
+app.use("/api", profileRoutes);
 // A simple test route
 app.get("/api/health", (req: Request, res: Response) => {
   res.status(200).json({
