@@ -3,6 +3,10 @@ import { AgodaAdapter } from "../adapters/AgodaAdapter";
 import { ExpediaAdapter } from "../adapters/ExpediaAdapter";
 import { ISortStrategy } from "../strategies/ISortStrategy";
 import { SortByPriceStrategy } from "../strategies/SortByPriceStrategy";
+import { BookingAdapter } from "../adapters/BookingAdapter";
+import { TripAdapter } from "../adapters/TripAdapter";
+import { HotelsComAdapter } from "../adapters/HotelsComAdapter";
+
 export class AggregatorFacade {
   private adapters: IHotelAPIAdapter[] = [];
   private sortStrategy: ISortStrategy;
@@ -10,6 +14,9 @@ export class AggregatorFacade {
   constructor() {
     this.adapters.push(new AgodaAdapter());
     this.adapters.push(new ExpediaAdapter());
+    this.adapters.push(new BookingAdapter());
+    this.adapters.push(new TripAdapter());
+    this.adapters.push(new HotelsComAdapter());
 
     this.sortStrategy = new SortByPriceStrategy();
   }

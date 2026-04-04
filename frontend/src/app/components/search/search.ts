@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { HotelService } from '../../services/hotel';
 import { Hotel } from '../../models/hotel.model';
 import { AuthService } from '../../services/auth';
-
+import { REGION_LIST } from '../../constants/locations';
 @Component({
   selector: 'app-search',
   standalone: true,
@@ -18,6 +18,7 @@ export class SearchComponent implements OnInit {
   isLoading = false;
   isLoggedIn = false;
   userEmail = '';
+  regions = REGION_LIST;
 
   constructor(
     private fb: FormBuilder,
