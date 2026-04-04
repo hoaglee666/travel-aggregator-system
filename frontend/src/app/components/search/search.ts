@@ -5,6 +5,8 @@ import { HotelService } from '../../services/hotel';
 import { Hotel } from '../../models/hotel.model';
 import { AuthService } from '../../services/auth';
 import { REGION_LIST } from '../../constants/locations';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-search',
   standalone: true,
@@ -29,6 +31,7 @@ export class SearchComponent implements OnInit {
     private hotelService: HotelService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
+    private router: Router,
   ) {
     this.searchForm = this.fb.group({
       destination: ['Da Lat'], // Default value
@@ -74,7 +77,29 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  // NEW HELPER: Cures Angular Amnesia!
+  checkAuthStatus(): boolean {
+    if (this.isLoggedIn) return true; // If Angular remembers, great!
+
+    // If Angular forgot (due to page refresh), check the hard drive
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const token = localStorage.getItem('token') || localStorage.getItem('jwt_token');
+      const userData = localStorage.getItem('user_data');
+
+      if (token || userData) {
+        this.isLoggedIn = true; // Restore Angular's memory
+        return true;
+      }
+    }
+    return false; // Definitely not logged in
+  }
+
   onTrackPrice(hotel: Hotel): void {
+    if (!this.checkAuthStatus()) {
+      alert('Please log in to track price drops!');
+      this.router.navigate(['/login']);
+      return;
+    }
     console.log('✅ Button clicked! Opening modal for:', hotel.name);
 
     this.selectedHotel = hotel;
@@ -114,6 +139,11 @@ export class SearchComponent implements OnInit {
   }
 
   onViewDeal(hotel: Hotel): void {
+    if (!this.checkAuthStatus()) {
+      alert('Please log in to view affiliate deals!');
+      this.router.navigate(['/login']);
+      return;
+    }
     const trackingUrl = `http://localhost:3000/api/redirect?hotelId=${hotel.hotelId}&provider=${hotel.provider}&price=${hotel.price}&name=${encodeURIComponent(hotel.name)}`;
 
     window.open(trackingUrl, '_blank');

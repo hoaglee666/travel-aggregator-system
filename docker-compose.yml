@@ -7,9 +7,11 @@ services:
     container_name: aggregator-db
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "Jkl01226255@"
+      SA_PASSWORD: "Jkl01226255@"
     ports:
       - "1433:1433"
+    volumes:
+      - ./sql-data:/var/opt/mssql
 
   # 2. The Backend Node.js Container
   backend:

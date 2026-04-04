@@ -74,3 +74,25 @@
 [INFO] 2026-04-04T07:47:12.342Z - --- Logger Initialized ---
 [INFO] 2026-04-04T07:47:27.933Z - [Observer] New Price Alert registered.
 [INFO] 2026-04-04T07:48:49.936Z - [Observer] New Price Alert registered.
+[INFO] 2026-04-04T08:01:42.995Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:01:50.228Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:02:10.376Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:02:16.096Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:02:33.841Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:02:45.107Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:24:30.922Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:33:20.880Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:37:31.522Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:38:53.229Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:39:15.816Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:40:31.059Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:40:47.009Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:41:34.667Z - [Observer] New Price Alert registered.
+[INFO] 2026-04-04T08:41:36.492Z - [AFFILIATE TRACKING] Outbound click to Booking.com | Hotel ID: BK-3264 | Price: 4218207 VND
+[INFO] 2026-04-04T08:42:24.649Z - [AFFILIATE TRACKING] Outbound click to Hotels.com | Hotel ID: HC-7015 | Price: 1029862 VND
+[INFO] 2026-04-04T08:45:23.894Z - [AFFILIATE TRACKING] Outbound click to Hotels.com | Hotel ID: HC-7015 | Price: 1029862 VND
+[INFO] 2026-04-04T08:45:41.724Z - [AFFILIATE TRACKING] Outbound click to Hotels.com | Hotel ID: HC-7015 | Price: 1029862 VND
+[INFO] 2026-04-04T08:47:04.512Z - --- Logger Initialized ---
+[INFO] 2026-04-04T08:47:32.504Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1018 | Price: 893279 VND
+[INFO] 2026-04-04T08:48:27.457Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1018 | Price: 893279 VND
+[INFO] 2026-04-04T08:50:24.842Z - [AFFILIATE TRACKING] Outbound click to Booking.com | Hotel ID: BK-3021 | Price: 1808018 VND
