@@ -123,3 +123,10 @@
 [INFO] 2026-04-04T09:45:40.366Z - --- Logger Initialized ---
 [INFO] 2026-04-04T09:45:45.729Z - --- Logger Initialized ---
 [INFO] 2026-04-04T09:46:19.242Z - --- Logger Initialized ---
+[INFO] 2026-04-04T10:37:25.687Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1018 | Price: 975872 VND
+[INFO] 2026-04-05T08:03:26.496Z - --- Logger Initialized ---
+[INFO] 2026-04-05T08:34:28.120Z - [AFFILIATE TRACKING] Outbound click to Booking.com | Hotel ID: BK-3015 | Price: 1303578 VND
+[INFO] 2026-04-05T08:54:12.259Z - --- Logger Initialized ---
+[INFO] 2026-04-05T08:55:29.882Z - --- Logger Initialized ---
+[INFO] 2026-04-05T08:56:09.921Z - --- Logger Initialized ---
+[INFO] 2026-04-05T08:57:46.861Z - [AFFILIATE TRACKING] Outbound click to Trip.com | Hotel ID: TRIP-5014 | Price: 1000000 VND

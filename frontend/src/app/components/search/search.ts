@@ -10,9 +10,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], // Import ReactiveFormsModule
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './search.html',
-  styleUrls: ['./search.scss'],
+  // Removed styleUrls if relying purely on Tailwind
 })
 export class SearchComponent implements OnInit {
   searchForm: FormGroup;
@@ -33,80 +33,74 @@ export class SearchComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
   ) {
+    // Upgraded form with UI visual fields
     this.searchForm = this.fb.group({
-      destination: ['Da Lat'], // Default value
-      sort: ['price'], // Default strategy
+      destination: ['Da Lat'],
+      checkIn: [''],
+      checkOut: [''],
+      guests: ['1'],
+      sort: ['price'],
     });
 
     this.alertForm = this.fb.group({
-      targetPrice: [0, [Validators.required, Validators.min(1)]], // <-- Add the inner brackets!
+      targetPrice: [0, [Validators.required, Validators.min(1)]],
     });
   }
 
   ngOnInit(): void {
-    // 1. Subscribe to the login status
     this.authService.isLoggedIn$.subscribe((status) => {
       this.isLoggedIn = status;
-
-      // Add the safety check here too!
-      if (status && typeof window !== 'undefined' && window.localStorage) {
-        const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
-        this.userEmail = userData.email;
+      if (status) {
+        const userDataStr = localStorage.getItem('user_data');
+        if (userDataStr) {
+          const userData = JSON.parse(userDataStr);
+          this.userEmail = userData.email;
+        }
       }
     });
 
-    // 2. Perform initial search
-    this.onSubmit();
+    // Optional: Load initial data on mount
+    // this.onSearch();
   }
 
-  onSubmit(): void {
+  checkAuthStatus(): boolean {
+    return this.isLoggedIn;
+  }
+
+  onSearch(): void {
+    if (this.searchForm.invalid) return;
+
     this.isLoading = true;
+    this.hotels = [];
+
+    // We only send destination and sort to your backend based on your current logic
     const { destination, sort } = this.searchForm.value;
 
     this.hotelService.searchAccommodations(destination, sort).subscribe({
-      next: (data) => {
-        this.hotels = data;
+      next: (res: Hotel[]) => {
+        this.hotels = res;
         this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('API Error:', err);
+        console.error('Error fetching hotels:', err);
         this.isLoading = false;
         this.cdr.detectChanges();
       },
     });
   }
 
-  // NEW HELPER: Cures Angular Amnesia!
-  checkAuthStatus(): boolean {
-    if (this.isLoggedIn) return true; // If Angular remembers, great!
-
-    // If Angular forgot (due to page refresh), check the hard drive
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const token = localStorage.getItem('token') || localStorage.getItem('jwt_token');
-      const userData = localStorage.getItem('user_data');
-
-      if (token || userData) {
-        this.isLoggedIn = true; // Restore Angular's memory
-        return true;
-      }
-    }
-    return false; // Definitely not logged in
-  }
-
-  onTrackPrice(hotel: Hotel): void {
+  openAlertModal(hotel: Hotel): void {
     if (!this.checkAuthStatus()) {
-      alert('Please log in to track price drops!');
+      alert('Please log in to set a price alert!');
       this.router.navigate(['/login']);
       return;
     }
-    console.log('✅ Button clicked! Opening modal for:', hotel.name);
 
     this.selectedHotel = hotel;
-    const suggestedPrice = Math.floor(hotel.price * 0.9); // 10% off
+    const suggestedPrice = Math.floor(hotel.price * 0.9);
     this.alertForm.patchValue({ targetPrice: suggestedPrice });
 
-    // THE ESCAPE HATCH: Force Angular to process this on the next exact frame
     setTimeout(() => {
       this.isAlertModalOpen = true;
       this.cdr.detectChanges();
@@ -128,7 +122,7 @@ export class SearchComponent implements OnInit {
       .setPriceAlerts(this.userEmail, this.selectedHotel.hotelId, targetPrice)
       .subscribe({
         next: (res) => {
-          alert(`✅ Success! ${res.message}`); // We can change this to a nice toast later if you want!
+          alert(`✅ Success! ${res.message}`);
           this.closeAlertModal();
         },
         error: (err) => {
@@ -145,7 +139,6 @@ export class SearchComponent implements OnInit {
       return;
     }
     const currentFrontendUrl = window.location.origin;
-
     const trackingUrl = `http://localhost:3000/api/redirect?hotelId=${hotel.hotelId}&provider=${hotel.provider}&price=${hotel.price}&name=${encodeURIComponent(hotel.name)}&frontend=${encodeURIComponent(currentFrontendUrl)}`;
 
     window.open(trackingUrl, '_blank');

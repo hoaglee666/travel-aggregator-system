@@ -6,7 +6,9 @@ export interface StandardHotel {
   destination: string;
   rating: number;
   price: number;
-  provider: string; // e.g., 'Agoda' or 'Expedia'
+  provider: string; // The backend uses 'provider' (Agoda, Expedia, etc.)
+  imageUrl?: string; // Added for the UI
+  bookingUrl?: string; // Added for the affiliate redirect logic
 }
 
 // The core Adapter interface that all partner adapters must implement

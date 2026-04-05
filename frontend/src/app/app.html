@@ -1,68 +1,189 @@
-<nav class="bg-white border-b border-gray-100 sticky top-0 z-[50] shadow-sm">
+<header class="bg-blue-900 text-white shadow-md sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16">
-      <div class="flex items-center">
-        <a routerLink="/search" class="flex items-center gap-2 group">
-          <span class="text-2xl">✈️</span>
-          <span
-            class="text-xl font-black tracking-tighter text-blue-600 group-hover:text-blue-700 transition"
-            >TRAVEL AGGREGATOR</span
-          >
-        </a>
-      </div>
+    <div class="flex items-center justify-between h-16">
+      <a
+        routerLink="/search"
+        (click)="closeMobileMenu()"
+        class="flex items-center gap-2 cursor-pointer group hover:opacity-90 transition"
+      >
+        <span class="text-2xl transform group-hover:scale-110 transition-transform">✈️</span>
+        <span class="text-2xl font-black tracking-tight text-white"> TravelHub </span>
+      </a>
 
-      <div class="flex items-center gap-1 sm:gap-4">
-        <ng-container *ngIf="isLoggedIn">
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-4">
+        @if (isLoggedIn) {
           <a
             routerLink="/search"
-            routerLinkActive="text-blue-600 bg-blue-50"
-            class="px-3 py-2 rounded-md text-sm font-bold text-gray-600 hover:text-blue-600 transition"
+            routerLinkActive="bg-blue-800 text-white font-semibold"
+            class="px-3 py-2 rounded-md text-sm font-medium text-blue-100 hover:bg-blue-800 hover:text-white transition-colors"
+          >
+            Search
+          </a>
+          <a
+            routerLink="/dashboard"
+            routerLinkActive="bg-blue-800 text-white font-semibold"
+            class="px-3 py-2 rounded-md text-sm font-medium text-blue-100 hover:bg-blue-800 hover:text-white transition-colors"
+          >
+            My Alerts
+          </a>
+          <a
+            routerLink="/profile"
+            routerLinkActive="bg-blue-800 text-white font-semibold"
+            class="px-3 py-2 rounded-md text-sm font-medium text-blue-100 hover:bg-blue-800 hover:text-white transition-colors"
+          >
+            Profile
+          </a>
+
+          @if (isAdmin) {
+            <a
+              routerLink="/admin"
+              routerLinkActive="bg-red-800 text-white font-semibold"
+              class="px-3 py-2 rounded-md text-sm font-medium text-red-200 hover:bg-red-800 hover:text-white transition-colors flex items-center gap-1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+                />
+              </svg>
+              Admin
+            </a>
+          }
+        }
+      </nav>
+
+      <div class="hidden md:flex items-center space-x-3">
+        @if (isLoggedIn) {
+          <div class="h-6 w-px bg-blue-700/50 mx-2"></div>
+          <button
+            (click)="onLogout()"
+            class="px-4 py-2 text-sm font-bold text-blue-900 bg-white rounded-lg hover:bg-gray-100 transition shadow-sm"
+          >
+            Logout
+          </button>
+        } @else {
+          <a
+            routerLink="/login"
+            class="px-3 py-2 text-sm font-medium text-blue-100 hover:text-white transition-colors"
+          >
+            Log in
+          </a>
+          <a
+            routerLink="/register"
+            class="px-4 py-2 text-sm font-bold text-blue-900 bg-white rounded-lg hover:bg-gray-100 transition shadow-sm hover:-translate-y-0.5"
+          >
+            Sign up
+          </a>
+        }
+      </div>
+
+      <div class="flex md:hidden items-center">
+        <button
+          (click)="toggleMobileMenu()"
+          class="p-2 rounded-md text-blue-200 hover:text-white hover:bg-blue-800 focus:outline-none transition-colors"
+        >
+          @if (!isMobileMenuOpen) {
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          } @else {
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+
+  @if (isMobileMenuOpen) {
+    <div class="md:hidden bg-blue-800 border-t border-blue-700 absolute w-full shadow-xl">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        @if (isLoggedIn) {
+          <a
+            routerLink="/search"
+            (click)="closeMobileMenu()"
+            class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-700"
             >Search</a
           >
           <a
             routerLink="/dashboard"
-            routerLinkActive="text-blue-600 bg-blue-50"
-            class="px-3 py-2 rounded-md text-sm font-bold text-gray-600 hover:text-blue-600 transition"
+            (click)="closeMobileMenu()"
+            class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-700"
             >My Alerts</a
           >
           <a
             routerLink="/profile"
-            routerLinkActive="text-blue-600 bg-blue-50"
-            class="px-3 py-2 rounded-md text-sm font-bold text-gray-600 hover:text-blue-600 transition"
+            (click)="closeMobileMenu()"
+            class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-700"
             >Profile</a
           >
 
-          <a
-            *ngIf="isAdmin"
-            routerLink="/admin"
-            routerLinkActive="text-red-600 bg-red-50"
-            class="px-3 py-2 rounded-md text-sm font-bold text-red-500 hover:text-red-700 transition border border-red-100"
-            >🛡️ Admin</a
-          >
-
+          @if (isAdmin) {
+            <a
+              routerLink="/admin"
+              (click)="closeMobileMenu()"
+              class="block px-3 py-2 rounded-md text-base font-medium text-red-200 hover:text-white hover:bg-red-800"
+              >🛡️ Admin Dashboard</a
+            >
+          }
           <button
             (click)="onLogout()"
-            class="ml-4 px-4 py-2 text-sm font-bold text-white bg-gray-800 rounded-lg hover:bg-black transition"
+            class="w-full text-left mt-4 block px-3 py-2 rounded-md text-base font-bold text-blue-900 bg-white hover:bg-gray-100"
           >
             Logout
           </button>
-        </ng-container>
-
-        <ng-container *ngIf="!isLoggedIn">
-          <a routerLink="/login" class="text-sm font-bold text-gray-600 hover:text-blue-600 px-3"
-            >Login</a
+        } @else {
+          <a
+            routerLink="/login"
+            (click)="closeMobileMenu()"
+            class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-700"
+            >Log in</a
           >
           <a
             routerLink="/register"
-            class="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 shadow-md transition"
-            >Register</a
+            (click)="closeMobileMenu()"
+            class="block px-3 py-2 rounded-md text-base font-bold text-blue-900 bg-white mt-2"
+            >Sign up</a
           >
-        </ng-container>
+        }
       </div>
     </div>
-  </div>
-</nav>
+  }
+</header>
 
-<main class="min-h-screen bg-gray-50/50">
-  <router-outlet></router-outlet>
+<main class="min-h-[calc(100vh-4rem)] flex flex-col bg-gray-50">
+  <div class="flex-grow">
+    <router-outlet></router-outlet>
+  </div>
+
+  <footer class="bg-white border-t border-gray-200 mt-auto">
+    <div
+      class="max-w-7xl mx-auto py-6 px-4 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500 gap-4"
+    >
+      <p>© 2026 TravelHub. All rights reserved.</p>
+      <div class="flex space-x-6">
+        <a href="#" class="hover:text-blue-900 transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-blue-900 transition-colors">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
 </main>
