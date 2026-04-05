@@ -17,13 +17,13 @@ const dbConfig: sql.config = {
   server: process.env.DB_SERVER as string,
   port: parseInt(process.env.DB_PORT || "1433", 10),
   pool: {
-    max: 10, // Maximum number of connections in the pool
+    max: 10,
     min: 0,
     idleTimeoutMillis: 30000,
   },
   options: {
-    encrypt: true, // Required for Azure, but harmless locally
-    trustServerCertificate: true, // CRITICAL: Allows connection to local Docker SQL without SSL errors
+    encrypt: true,
+    trustServerCertificate: true,
   },
 };
 
@@ -32,8 +32,7 @@ const masterConfig: sql.config = {
   database: "master",
 };
 
-// Create a connection pool singleton
-export const connectDB = async () => {
+export const poolPromise: Promise<sql.ConnectionPool> = (async () => {
   try {
     const masterPool = await sql.connect(masterConfig);
 
@@ -51,6 +50,6 @@ export const connectDB = async () => {
     return pool;
   } catch (error) {
     console.error("❌ Database connection failed:", error);
-    process.exit(1); // Kill the server if the DB is unreachable
+    process.exit(1);
   }
-};
+})();

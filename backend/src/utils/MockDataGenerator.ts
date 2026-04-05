@@ -139,8 +139,15 @@ export class MockDataGenerator {
     return `${prefix} ${city} ${suffix}`;
   }
 
+  private static agodaCache: any[] = [];
+  private static expediaCache: any[] = [];
+  private static bookingCache: any[] = [];
+  private static tripCache: any[] = [];
+  private static hotelsComCache: any[] = [];
   // Generates flat data for Agoda
   public static generateAgodaDatabase(hotelCountPerCity: number = 100) {
+    if (this.agodaCache.length > 0) return this.agodaCache;
+
     let database: any[] = [];
     let idCounter = 1000;
 
@@ -166,11 +173,13 @@ export class MockDataGenerator {
         }
       }
     }
+    this.agodaCache = database;
     return database;
   }
 
   // Generates nested data for Expedia
   public static generateExpediaDatabase(hotelCountPerCity: number = 100) {
+    if (this.expediaCache.length > 0) return this.expediaCache;
     let database: any[] = [];
     let idCounter = 8000;
 
@@ -200,10 +209,12 @@ export class MockDataGenerator {
         }
       }
     }
+    this.expediaCache = database;
     return database;
   }
 
   public static generateBookingDatabase(hotelCountPerCity: number = 100) {
+    if (this.bookingCache.length > 0) return this.bookingCache;
     let database: any[] = [];
     let idCounter = 3000;
     for (const [country, cities] of Object.entries(ASIA_REGIONS)) {
@@ -232,10 +243,12 @@ export class MockDataGenerator {
         }
       }
     }
+    this.bookingCache = database;
     return database;
   }
 
   public static generateTripDatabase(hotelCountPerCity: number = 100) {
+    if (this.tripCache.length > 0) return this.tripCache;
     let database: any[] = [];
     let idCounter = 5000;
     for (const [country, cities] of Object.entries(ASIA_REGIONS)) {
@@ -257,10 +270,12 @@ export class MockDataGenerator {
         }
       }
     }
+    this.tripCache = database;
     return database;
   }
 
   public static generateHotelsComDatabase(hotelCountPerCity: number = 100) {
+    if (this.hotelsComCache.length > 0) return this.hotelsComCache;
     let database: any[] = [];
     let idCounter = 7000;
     for (const [country, cities] of Object.entries(ASIA_REGIONS)) {
@@ -289,6 +304,7 @@ export class MockDataGenerator {
         }
       }
     }
+    this.hotelsComCache = database;
     return database;
   }
 }

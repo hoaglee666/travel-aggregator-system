@@ -3,6 +3,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import sql from "mssql";
 
+// ✅ Import the Promise
+import { poolPromise } from "../config/database";
+
 const JWT_SECRET = process.env.JWT_SECRET || "fallback_secret";
 
 export const registerUser = async (
@@ -10,49 +13,44 @@ export const registerUser = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { email, password, fullName, phoneNumber, creditCard } = req.body;
+    const { fullName, email, password, phone_number, credit_card } = req.body;
 
-    if (!email || !password) {
+    if (!email || !password || !fullName) {
       res
         .status(400)
-        .json({ success: false, message: "Email and password are required" });
+        .json({ success: false, message: "Missing required fields" });
       return;
     }
 
-    const request = new sql.Request();
+    // ✅ Wait for the connection to be fully ready!
+    const pool = await poolPromise;
+    const request = pool.request();
 
-    // Check if email exists
-    const checkResult = await request
+    const checkUser = await request
       .input("email", sql.VarChar, email)
-      .query("SELECT id FROM USERS WHERE email = @email");
+      .query("SELECT * FROM USERS WHERE email = @email");
 
-    if (checkResult.recordset.length > 0) {
-      res
-        .status(409)
-        .json({ success: false, message: "Email is already registered" });
+    if (checkUser.recordset.length > 0) {
+      res.status(400).json({ success: false, message: "Email already exists" });
       return;
     }
 
-    // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // INSERT without the 'role' column!
     await request
-      .input("newEmail", sql.VarChar, email)
-      .input("passwordHash", sql.VarChar, passwordHash)
-      .input("fullName", sql.VarChar, fullName || "New User")
-      .input("phoneNumber", sql.VarChar, phoneNumber || "")
-      .input("creditCard", sql.VarChar, creditCard || "").query(`
-                INSERT INTO USERS (email, password, full_name, phone_number, credit_card)
-                VALUES (@newEmail, @passwordHash, @fullName, @phoneNumber, @creditCard)
-            `);
+      .input("fullName", sql.VarChar, fullName)
+      .input("password", sql.VarChar, hashedPassword)
+      .input("phone_number", sql.VarChar, phone_number || "")
+      .input("credit_card", sql.VarChar, credit_card || "").query(`
+        INSERT INTO USERS (full_name, email, password, phone_number, credit_card) 
+        VALUES (@fullName, @email, @password, @phone_number, @credit_card)
+      `);
 
     res
       .status(201)
-      .json({ success: true, message: "User registered successfully!" });
+      .json({ success: true, message: "User registered successfully" });
   } catch (error) {
-    console.error("[Auth] Registration Error:", error);
+    console.error("[Auth] Register Error:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
@@ -68,9 +66,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const request = new sql.Request();
+    // ✅ Wait for the connection to be fully ready!
+    const pool = await poolPromise;
+    const request = pool.request();
 
-    // Get user data
     const userResult = await request
       .input("email", sql.VarChar, email)
       .query("SELECT * FROM USERS WHERE email = @email");
@@ -84,7 +83,6 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -94,10 +92,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // DYNAMIC ROLE ASSIGNMENT (No database column needed!)
     const userRole = user.email === "admin@gmail.com" ? "Admin" : "Member";
 
-    // Generate Token
     const token = jwt.sign(
       { userId: user.id, email: user.email, role: userRole },
       JWT_SECRET,
@@ -113,7 +109,6 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         email: user.email,
         fullName: user.full_name,
         role: userRole,
-        // ✅ NEW: Send the secure data back to the frontend!
         phone_number: user.phone_number,
         credit_card: user.credit_card,
       },

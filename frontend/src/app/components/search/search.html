@@ -148,7 +148,7 @@
     </div>
 
     <div class="space-y-6">
-      @for (hotel of hotels; track hotel.hotelId) {
+      @for (hotel of paginatedHotels; track hotel.hotelId) {
         <div
           class="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 transition-shadow duration-300 overflow-hidden flex flex-col sm:flex-row group"
         >
@@ -295,7 +295,31 @@
     </div>
   }
 </div>
+@if (!isLoading && totalPages > 1) {
+  <div class="flex justify-center items-center gap-4 mt-12 mb-8">
+    <button
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      class="px-5 py-2.5 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 hover:border-blue-600 hover:text-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      ← Previous
+    </button>
 
+    <div
+      class="font-bold text-gray-800 bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100"
+    >
+      Page {{ currentPage }} of {{ totalPages }}
+    </div>
+
+    <button
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+      class="px-5 py-2.5 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 hover:border-blue-600 hover:text-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      Next →
+    </button>
+  </div>
+}
 @if (isAlertModalOpen) {
   <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
     <div

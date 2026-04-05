@@ -10,6 +10,7 @@ import {
   ValidatorFn,
   ValidationErrors,
 } from '@angular/forms';
+import { SocketService } from '../../services/socket';
 
 export function matchProfileValidator(fieldType: 'phone' | 'card'): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -58,6 +59,7 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private socketService: SocketService,
   ) {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
@@ -175,6 +177,7 @@ export class CheckoutComponent implements OnInit {
         bookedAt: new Date().toISOString(),
       });
       localStorage.setItem('my_bookings', JSON.stringify(currentBookings));
+      this.socketService.emitBooking(this.hotelId);
     } else {
       this.checkoutForm.markAllAsTouched();
     }

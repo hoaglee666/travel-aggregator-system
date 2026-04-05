@@ -6,6 +6,7 @@ import { Hotel } from '../../models/hotel.model';
 import { AuthService } from '../../services/auth';
 import { REGION_LIST } from '../../constants/locations';
 import { Router } from '@angular/router';
+import { SocketService } from '../../services/socket';
 
 @Component({
   selector: 'app-search',
@@ -34,6 +35,7 @@ export class SearchComponent implements OnInit {
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
     private router: Router,
+    private socketService: SocketService,
   ) {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
@@ -62,6 +64,18 @@ export class SearchComponent implements OnInit {
         }
       }
     });
+    this.socketService.onInventoryUpdate().subscribe((data) => {
+      console.log('Real-time update received!', data);
+
+      // Find the hotel in our master list and deduct a room
+      const hotel = this.hotels.find((h) => h.hotelId === data.hotelId);
+      if (hotel && hotel.roomsLeft > 0) {
+        hotel.roomsLeft -= 1;
+
+        // Refresh the current page to show the new number!
+        this.updatePagination();
+      }
+    });
   }
 
   updateNights(): void {
@@ -76,6 +90,11 @@ export class SearchComponent implements OnInit {
       this.calculateNights = 1;
     }
   }
+
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalPages: number = 0;
+  paginatedHotels: Hotel[] = [];
 
   onSearch(): void {
     if (this.searchForm.invalid) return;
@@ -100,24 +119,13 @@ export class SearchComponent implements OnInit {
           });
         }
 
-        // --- NEW: INVENTORY SYNC WITH USER BOOKINGS ---
-        const myBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
-
-        fetchedHotels = fetchedHotels.map((hotel) => {
-          // Check if this specific user has booked this hotel
-          const timesBookedByUser = myBookings.filter(
-            (b: any) => b.hotelId === hotel.hotelId,
-          ).length;
-
-          if (timesBookedByUser > 0) {
-            // Deduct the booked rooms from the mock availability
-            hotel.roomsLeft = Math.max(0, hotel.roomsLeft - timesBookedByUser);
-          }
-          return hotel;
-        });
-        // ----------------------------------------------
+        // ❌ WE DELETED THE LOCAL STORAGE MY_BOOKINGS MATH FROM HERE!
+        // The backend `res` already has the correct roomsLeft now!
 
         this.hotels = fetchedHotels;
+        this.currentPage = 1;
+        this.updatePagination();
+
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -127,6 +135,24 @@ export class SearchComponent implements OnInit {
         this.cdr.detectChanges();
       },
     });
+  }
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.hotels.length / this.itemsPerPage);
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+
+    // Slice the master array to get just the 10 for this page
+    this.paginatedHotels = this.hotels.slice(startIndex, endIndex);
+    this.cdr.detectChanges();
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+      // Smooth scroll back to the top of the results
+      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
   }
 
   checkAuthStatus(): boolean {

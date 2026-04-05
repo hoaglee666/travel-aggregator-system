@@ -6,7 +6,7 @@ import { SortByPriceStrategy } from "../strategies/SortByPriceStrategy";
 import { BookingAdapter } from "../adapters/BookingAdapter";
 import { TripAdapter } from "../adapters/TripAdapter";
 import { HotelsComAdapter } from "../adapters/HotelsComAdapter";
-
+import { globalBookingCounts } from "../utils/BookingStore";
 export class AggregatorFacade {
   private adapters: IHotelAPIAdapter[] = [];
   private sortStrategy: ISortStrategy;
@@ -43,7 +43,15 @@ export class AggregatorFacade {
     // 3. Flatten the array of arrays into a single list of StandardHotels
     let allHotels: StandardHotel[] = resultsArray.flat();
 
-    // 4. Default Sorting Strategy: Sort by lowest price first
+    // ✅ NEW: DEDUCT ALL GLOBAL BOOKINGS BEFORE RETURNING!
+    allHotels = allHotels.map((hotel) => {
+      const bookedCount = globalBookingCounts.get(hotel.hotelId) || 0;
+      // Ensure we don't drop below 0
+      hotel.roomsLeft = Math.max(0, hotel.roomsLeft - bookedCount);
+      return hotel;
+    });
+
+    // 4. Default Sorting Strategy
     allHotels = this.sortStrategy.sort(allHotels);
     console.log(`[Facade] Successfully aggregated ${allHotels.length} hotels.`);
     return allHotels;
