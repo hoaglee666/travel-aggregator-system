@@ -26,6 +26,10 @@ export class DashboardComponent implements OnInit {
   editForm: FormGroup;
   minDate: string;
 
+  isAlertEditModalOpen = false;
+  selectedAlert: any = null;
+  alertEditForm: FormGroup;
+
   constructor(
     private hotelService: HotelService,
     private authService: AuthService,
@@ -34,7 +38,9 @@ export class DashboardComponent implements OnInit {
   ) {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
-
+    this.alertEditForm = this.fb.group({
+      targetPrice: [0, [Validators.required, Validators.min(1)]],
+    });
     this.editForm = this.fb.group({
       checkIn: ['', Validators.required],
       checkOut: ['', Validators.required],
@@ -118,6 +124,30 @@ export class DashboardComponent implements OnInit {
 
     this.closeEditModal();
     this.cdr.detectChanges();
+  }
+
+  openAlertEditModal(alert: any): void {
+    this.selectedAlert = alert;
+    this.alertEditForm.patchValue({ targetPrice: alert.target_price });
+    this.isAlertEditModalOpen = true;
+  }
+
+  closeAlertEditModal(): void {
+    this.isAlertEditModalOpen = false;
+    this.selectedAlert = null;
+  }
+
+  saveAlertChanges(): void {
+    if (this.alertEditForm.invalid) return;
+    const newPrice = this.alertEditForm.value.targetPrice;
+
+    this.hotelService.updateUserAlert(this.selectedAlert.alert_id, newPrice).subscribe({
+      next: () => {
+        this.fetchMyAlerts(); // Refresh the list
+        this.closeAlertEditModal();
+      },
+      error: () => alert('Failed to update price alert'),
+    });
   }
 
   // --- ALERT MANAGEMENT ---

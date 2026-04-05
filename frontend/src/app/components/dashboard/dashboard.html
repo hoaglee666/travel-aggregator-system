@@ -152,13 +152,22 @@
                   </p>
                   <h2 class="text-xl font-bold text-gray-800">Hotel ID: {{ alert.hotel_id }}</h2>
                 </div>
-                <button
-                  (click)="removeAlert(alert.alert_id)"
-                  class="text-gray-400 hover:text-red-600 bg-gray-50 hover:bg-red-50 p-2 rounded-lg transition-colors"
-                  title="Remove Alert"
-                >
-                  ✖
-                </button>
+                <div class="flex gap-2">
+                  <button
+                    (click)="openAlertEditModal(alert)"
+                    class="text-gray-400 hover:text-blue-600 bg-gray-50 hover:bg-blue-50 p-2 rounded-lg transition-colors"
+                    title="Edit Alert"
+                  >
+                    ✏️
+                  </button>
+                  <button
+                    (click)="removeAlert(alert.alert_id)"
+                    class="text-gray-400 hover:text-red-600 bg-gray-50 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                    title="Remove Alert"
+                  >
+                    ✖
+                  </button>
+                </div>
               </div>
             </div>
             <div
@@ -231,6 +240,55 @@
               class="flex-1 py-3 px-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 shadow-md"
             >
               Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+@if (isAlertEditModalOpen) {
+  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div
+      class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+      (click)="closeAlertEditModal()"
+    ></div>
+    <div class="relative bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+      <div class="bg-blue-900 p-6 text-white">
+        <h2 class="text-2xl font-black flex items-center gap-2">
+          <span>🔔</span> Edit Price Alert
+        </h2>
+      </div>
+      <div class="p-6">
+        <form [formGroup]="alertEditForm" (ngSubmit)="saveAlertChanges()">
+          <label class="block text-sm font-bold text-gray-700 mb-2">New Target Price</label>
+          <div class="relative">
+            <input
+              type="number"
+              formControlName="targetPrice"
+              class="w-full pl-4 pr-12 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none font-bold"
+            />
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 font-bold pointer-events-none"
+            >
+              ₫
+            </div>
+          </div>
+          <div class="flex gap-3 mt-8">
+            <button
+              type="button"
+              (click)="closeAlertEditModal()"
+              class="flex-1 py-3 bg-white border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              [disabled]="alertEditForm.invalid"
+              class="flex-1 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            >
+              Save
             </button>
           </div>
         </form>

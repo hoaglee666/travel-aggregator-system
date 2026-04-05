@@ -35,4 +35,8 @@ export class HotelService {
   removeUserAlert(alertId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/alerts/${alertId}`);
   }
+
+  updateUserAlert(alertId: number, targetPrice: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/alerts/${alertId}`, { targetPrice });
+  }
 }

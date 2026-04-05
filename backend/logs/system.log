@@ -195,3 +195,13 @@
 [INFO] 2026-04-05T14:57:41.265Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1301 | Price: 1718549 VND
 [INFO] 2026-04-05T14:58:08.754Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1301 | Price: 1718549 VND
 [INFO] 2026-04-05T14:58:41.273Z - [Observer] New Price Alert registered.
+[INFO] 2026-04-05T15:07:01.733Z - --- Logger Initialized ---
+[INFO] 2026-04-05T15:07:44.582Z - --- Logger Initialized ---
+[INFO] 2026-04-05T15:16:02.691Z - --- Logger Initialized ---
+[INFO] 2026-04-05T15:16:13.185Z - --- Logger Initialized ---
+[INFO] 2026-04-05T15:17:18.042Z - --- Logger Initialized ---
+[INFO] 2026-04-05T15:17:46.431Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1341 | Price: 808875 VND
+[INFO] 2026-04-05T15:23:21.506Z - [AFFILIATE TRACKING] Outbound click to Expedia | Hotel ID: EXP-8352 | Price: 3925000 VND
+[INFO] 2026-04-05T15:27:05.950Z - [Observer] New Price Alert registered.
+[INFO] 2026-04-05T16:08:18.833Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1341 | Price: 808875 VND
+[INFO] 2026-04-05T16:54:45.987Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1389 | Price: 1123874 VND

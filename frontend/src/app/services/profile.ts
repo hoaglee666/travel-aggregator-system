@@ -19,4 +19,8 @@ export class ProfileService {
   deposit(email: string, amount: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/deposit`, { email, amount });
   }
+
+  updateProfile(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update`, data);
+  }
 }

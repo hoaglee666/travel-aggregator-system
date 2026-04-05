@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PriceMonitorManager } from "../patterns/observer/PriceMonitorManager";
 import { UserPriceAlert } from "../patterns/observer/UserPriceAlert";
 import sql from "mssql";
+import { poolPromise } from "../config/database";
 
 // We create ONE monitor for the whole application
 const priceMonitor = new PriceMonitorManager();
@@ -107,5 +108,30 @@ export const deleteAlert = async (
   } catch (error) {
     console.error("[Alerts] Delete Error:", error);
     res.status(500).json({ success: false, message: "Failed to remove alert" });
+  }
+};
+
+export const updatePriceAlert = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const { alertId } = req.params;
+    const { targetPrice } = req.body;
+    const pool = await poolPromise;
+    await pool
+      .request()
+      .input("alertId", sql.Int, alertId)
+      .input("targetPrice", sql.Decimal(18, 2), targetPrice)
+      .query(
+        "UPDATE PRICE_ALERTS SET target_price = @targetPrice WHERE alert_id = @alertId",
+      );
+
+    res
+      .status(200)
+      .json({ success: true, message: "Alert updated successfully" });
+  } catch (error) {
+    console.error("[Alert] Update Error:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };

@@ -73,8 +73,8 @@ export class RegisterComponent {
         fullName,
         email,
         password,
-        phone_number: phoneNumber, // Added!
-        credit_card: creditCard, // Added!
+        phone_number: phoneNumber,
+        credit_card: creditCard,
       })
       .subscribe({
         next: (res) => {
@@ -87,7 +87,7 @@ export class RegisterComponent {
         },
         error: (err) => {
           this.isLoading = false;
-          this.errorMessage = err.error?.message || 'Registration failed. Please try again.';
+          this.errorMessage = err.error.message || 'Registration failed. Please try again.';
         },
       });
   }
