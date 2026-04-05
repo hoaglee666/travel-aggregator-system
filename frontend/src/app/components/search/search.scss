@@ -1,0 +1,775 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  position: relative;
+}
+
+// Hero section enhancements
+.bg-blue-900 {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M10,10 L90,10 M10,30 L90,30 M10,50 L90,50 M10,70 L90,70 M10,90 L90,90 M30,10 L30,90 M50,10 L50,90 M70,10 L70,90 M90,10 L90,90" stroke="white" stroke-width="0.5"/></svg>') repeat;
+    pointer-events: none;
+  }
+  
+  h1 {
+    animation: fadeInUp 0.6s ease-out;
+    position: relative;
+    
+    &::before {
+      content: '🏨';
+      position: absolute;
+      left: -50px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      opacity: 0;
+      animation: slideInRight 0.5s ease-out 0.2s forwards;
+      
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+    
+    &::after {
+      content: '✈️';
+      position: absolute;
+      right: -50px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      opacity: 0;
+      animation: slideInLeft 0.5s ease-out 0.2s forwards;
+      
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+  }
+  
+  p {
+    animation: fadeIn 0.6s ease-out 0.3s forwards;
+    opacity: 0;
+  }
+}
+
+// Search form container
+.max-w-7xl.mx-auto.-mt-20 {
+  animation: slideInUp 0.5s ease-out;
+}
+
+// Search form card
+.bg-white.rounded-2xl {
+  transition: all 0.3s;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.2);
+  }
+  
+  form {
+    position: relative;
+  }
+}
+
+// Form inputs and selects
+select, input {
+  transition: all 0.3s;
+  
+  &:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+  }
+  
+  &:hover:not(:focus) {
+    border-color: #3b82f6;
+    background-color: #f8fafc;
+  }
+}
+
+// Select dropdown styling
+select {
+  cursor: pointer;
+  appearance: none;
+  
+  optgroup {
+    font-weight: bold;
+    color: #1e293b;
+    
+    option {
+      font-weight: normal;
+      padding: 8px;
+    }
+  }
+}
+
+// Date inputs
+input[type="date"] {
+  cursor: pointer;
+  position: relative;
+  
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background-color: #e2e8f0;
+    }
+  }
+  
+  &::-webkit-datetime-edit {
+    color: #1e293b;
+  }
+  
+  &::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+  }
+}
+
+// Search button
+button[type="submit"] {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    
+    &::before {
+      width: 300px;
+      height: 300px;
+    }
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+// Empty state
+.text-center.py-20 {
+  animation: fadeInUp 0.5s ease-out;
+  
+  span {
+    animation: bounce 1s ease-in-out infinite;
+    display: inline-block;
+  }
+  
+  h2 {
+    background: linear-gradient(135deg, #1e293b, #475569);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+// Hotel cards
+.bg-white.rounded-2xl {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15);
+  }
+  
+  // Card entrance animations
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation: slideInUp 0.4s ease-out #{$i * 0.05}s both;
+    }
+  }
+}
+
+// Hotel image container
+.w-full.sm\:w-72 {
+  position: relative;
+  overflow: hidden;
+  
+  img {
+    transition: transform 0.5s ease;
+  }
+  
+  &:hover img {
+    transform: scale(1.1);
+  }
+}
+
+// Provider badge
+.absolute.top-3.left-3 {
+  animation: fadeIn 0.3s ease-out;
+  backdrop-filter: blur(8px);
+  
+  &:hover {
+    transform: scale(1.05);
+    background-color: white;
+  }
+}
+
+// Rating badge
+.bg-blue-900.text-white {
+  position: relative;
+  
+  &::before {
+    content: '★';
+    margin-right: 4px;
+    font-size: 12px;
+  }
+}
+
+// Star ratings
+.text-yellow-400 {
+  svg {
+    transition: transform 0.2s;
+    
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
+
+// Price section
+.border-t {
+  .text-2xl {
+    position: relative;
+    display: inline-block;
+    
+    &::after {
+      content: '₫';
+      margin-left: 2px;
+      font-size: 1rem;
+      font-weight: normal;
+    }
+  }
+}
+
+// Action buttons
+button {
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  
+  &.border-2 {
+    &:hover {
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  &.bg-blue-600 {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Modal overlay
+.fixed.inset-0 {
+  animation: fadeIn 0.3s ease-out;
+  z-index: 1000;
+  
+  > div:first-child {
+    cursor: pointer;
+  }
+  
+  .relative.bg-white {
+    animation: scaleIn 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+    
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+      
+      &:hover {
+        background: #94a3b8;
+      }
+    }
+  }
+}
+
+// Modal header
+.bg-blue-900.p-6 {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    border-radius: 50%;
+  }
+  
+  h2 {
+    animation: slideInLeft 0.3s ease-out;
+  }
+}
+
+// Alert form
+form[formGroup="alertForm"] {
+  input {
+    font-size: 1.125rem;
+    
+    &:focus {
+      transform: scale(1.02);
+    }
+    
+    // Remove spinner buttons for number input
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      opacity: 0.5;
+    }
+  }
+  
+  .text-xs.text-blue-600 {
+    animation: pulse 2s ease-in-out infinite;
+  }
+}
+
+// Modal buttons
+.flex.gap-3 {
+  button {
+    &:first-child {
+      &:hover {
+        background-color: #f8fafc;
+        transform: translateY(-1px);
+      }
+    }
+    
+    &:last-child {
+      background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+      
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px -4px rgba(234, 88, 12, 0.3);
+      }
+      
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Loading skeletons
+.animate-pulse {
+  .bg-gray-200 {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .max-w-7xl {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .bg-blue-900 {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+    
+    h1 {
+      font-size: 2rem;
+    }
+    
+    p {
+      font-size: 1rem;
+    }
+  }
+  
+  .max-w-7xl.mx-auto.-mt-20 {
+    margin-top: -2.5rem;
+  }
+  
+  .bg-white.rounded-2xl {
+    padding: 1rem;
+  }
+  
+  form {
+    flex-direction: column;
+    
+    select, input, button {
+      width: 100%;
+    }
+  }
+  
+  .flex.gap-2 {
+    flex-direction: column;
+    gap: 0.75rem;
+    
+    input {
+      width: 100%;
+    }
+  }
+  
+  .w-full.sm\:w-72 {
+    height: 200px;
+  }
+  
+  .p-5.sm\:p-6 {
+    padding: 1rem;
+  }
+  
+  .text-xl.font-bold {
+    font-size: 1.125rem;
+  }
+  
+  .text-2xl.font-black {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .max-w-7xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .bg-white.rounded-2xl {
+    padding: 0.75rem;
+  }
+  
+  select, input, button {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  
+  .flex.justify-between.items-start {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .mt-6 {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    
+    > div:first-child {
+      text-align: center;
+    }
+    
+    .flex.gap-3 {
+      flex-direction: column;
+      
+      button {
+        width: 100%;
+      }
+    }
+  }
+  
+  // Modal adjustments
+  .fixed.inset-0 .relative.bg-white {
+    margin: 1rem;
+    max-width: calc(100% - 2rem);
+    
+    .p-6 {
+      padding: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .bg-blue-900.p-6 {
+    padding: 1rem;
+  }
+  
+  .text-2xl.font-black {
+    font-size: 1rem;
+  }
+}
+
+// Print styles
+@media print {
+  :host {
+    background: white;
+  }
+  
+  button,
+  .absolute.inset-0,
+  .fixed.inset-0 {
+    display: none !important;
+  }
+  
+  .bg-white.rounded-2xl {
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+    break-inside: avoid;
+  }
+  
+  .w-full.sm\:w-72 {
+    break-inside: avoid;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  :host {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  }
+  
+  .bg-white {
+    background-color: #1e293b;
+    
+    &.rounded-2xl {
+      border-color: #334155;
+    }
+    
+    .text-gray-900,
+    .text-gray-800 {
+      color: #f1f5f9;
+    }
+    
+    .text-gray-500,
+    .text-gray-700 {
+      color: #94a3b8;
+    }
+    
+    .border-gray-100,
+    .border-gray-200 {
+      border-color: #334155;
+    }
+    
+    .bg-gray-50 {
+      background-color: #334155;
+    }
+  }
+  
+  select, input {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #f1f5f9;
+    
+    &:hover:not(:focus) {
+      background-color: #334155;
+    }
+    
+    option {
+      background-color: #1e293b;
+      color: #f1f5f9;
+    }
+  }
+  
+  .bg-gray-200 {
+    background-color: #334155;
+  }
+  
+  .bg-blue-900 {
+    background: linear-gradient(135deg, #1e3a8a, #1e40af);
+  }
+  
+  .bg-gray-50.rounded-xl {
+    background-color: #334155;
+  }
+  
+  .text-blue-600 {
+    color: #60a5fa;
+  }
+}
+
+// Animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Focus styles
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+  
+  &:hover {
+    background: #94a3b8;
+  }
+}
+
+// Tooltip for alert button (enhancement)
+button[title="Set Price Alert"] {
+  position: relative;
+  
+  &::after {
+    content: 'Get notified when price drops';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1e293b;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    margin-bottom: 8px;
+    z-index: 10;
+  }
+  
+  &:hover::after {
+    opacity: 1;
+  }
+}

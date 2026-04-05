@@ -1,0 +1,586 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+  
+  // Animated background shapes
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+  }
+  
+  &::before {
+    width: 300px;
+    height: 300px;
+    top: -100px;
+    right: -100px;
+    animation: float 20s ease-in-out infinite;
+  }
+  
+  &::after {
+    width: 200px;
+    height: 200px;
+    bottom: -50px;
+    left: -50px;
+    animation: float 15s ease-in-out infinite reverse;
+  }
+}
+
+// Card container animation
+.max-w-md {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+  
+  // Glass morphism effect
+  .bg-white {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    transition: all 0.3s;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.25);
+    }
+  }
+}
+
+// Header styles
+.text-center {
+  position: relative;
+  
+  h2 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+    display: inline-block;
+    
+    &::before {
+      content: '🔐';
+      position: absolute;
+      left: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 28px;
+      opacity: 0;
+      animation: slideInRight 0.4s ease-out 0.2s forwards;
+    }
+    
+    &::after {
+      content: '🔐';
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 28px;
+      opacity: 0;
+      animation: slideInLeft 0.4s ease-out 0.2s forwards;
+    }
+  }
+  
+  p {
+    animation: fadeIn 0.5s ease-out 0.3s forwards;
+    opacity: 0;
+  }
+}
+
+// Error message styling
+.bg-red-100 {
+  animation: shake 0.4s ease-out;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '⚠️';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+  }
+  
+  p {
+    margin-left: 20px;
+  }
+  
+  // Auto-hide animation after 5 seconds (optional)
+  animation: fadeOut 5s ease-out forwards;
+  animation-delay: 3s;
+}
+
+// Form styles
+form {
+  .space-y-6 > div {
+    animation: fadeInUp 0.4s ease-out;
+    animation-fill-mode: both;
+    
+    &:first-child {
+      animation-delay: 0.1s;
+    }
+    
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+  }
+}
+
+// Label styling
+label {
+  font-weight: 600;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  
+  &::before {
+    font-size: 1rem;
+  }
+  
+  &:has(+ input[type="email"])::before {
+    content: '📧';
+  }
+  
+  &:has(+ input[type="password"])::before {
+    content: '🔒';
+  }
+}
+
+// Input field styles
+input {
+  transition: all 0.3s;
+  background-color: #ffffff;
+  
+  &:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+  }
+  
+  &:hover:not(:focus) {
+    border-color: #a78bfa;
+    background-color: #faf5ff;
+  }
+  
+  // Invalid state
+  &.ng-invalid.ng-touched {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+  }
+  
+  // Valid state
+  &.ng-valid.ng-touched {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+  }
+  
+  // Placeholder styling
+  &::placeholder {
+    color: #cbd5e1;
+    font-size: 0.875rem;
+    transition: opacity 0.2s;
+  }
+  
+  &:focus::placeholder {
+    opacity: 0.5;
+  }
+}
+
+// Submit button
+button[type="submit"] {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.4);
+    
+    &::before {
+      width: 300px;
+      height: 300px;
+    }
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+  }
+  
+  // Loading state text
+  &:disabled:contains('Signing in...') {
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid white;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-left: 8px;
+    }
+  }
+}
+
+// Register link section
+.mt-6 {
+  animation: fadeInUp 0.4s ease-out 0.3s both;
+  
+  a {
+    position: relative;
+    display: inline-block;
+    transition: all 0.2s;
+    
+    &::after {
+      content: '→';
+      margin-left: 5px;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+    
+    &:hover {
+      transform: translateX(3px);
+      
+      &::after {
+        transform: translateX(3px);
+      }
+    }
+  }
+}
+
+// Additional decorative elements
+.max-w-md {
+  position: relative;
+  
+  // Subtle pattern overlay
+  &::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle at 30% 40%, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+    border-radius: 32px;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+// Responsive design
+@media (max-width: 640px) {
+  .max-w-md {
+    margin: 1rem;
+    
+    .bg-white {
+      padding: 1.5rem;
+    }
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+  
+  input, button {
+    font-size: 0.875rem;
+  }
+  
+  button[type="submit"] {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .max-w-md {
+    .bg-white {
+      padding: 1.25rem;
+    }
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+  
+  .text-sm {
+    font-size: 0.75rem;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  :host {
+    background: #000;
+  }
+  
+  .bg-white {
+    background: #fff;
+    border: 2px solid #000;
+  }
+  
+  input {
+    border: 2px solid #000;
+  }
+  
+  button[type="submit"] {
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+  }
+}
+
+// Reduced motion preferences
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  :host {
+    background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%);
+  }
+  
+  .bg-white {
+    background: rgba(30, 27, 75, 0.95);
+    
+    h2 {
+      color: #f1f5f9;
+    }
+    
+    p, label {
+      color: #cbd5e1;
+    }
+  }
+  
+  input {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #f1f5f9;
+    
+    &:focus {
+      background-color: #1e293b;
+    }
+    
+    &::placeholder {
+      color: #64748b;
+    }
+  }
+  
+  .bg-red-100 {
+    background-color: #7f1d1d;
+    border-left-color: #ef4444;
+    
+    p {
+      color: #fecaca;
+    }
+  }
+  
+  .text-gray-500 {
+    color: #94a3b8;
+  }
+}
+
+// Animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-2px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(20px, -20px) rotate(120deg);
+  }
+  66% {
+    transform: translate(-10px, 15px) rotate(240deg);
+  }
+}
+
+// Password strength indicator (optional enhancement)
+.password-strength {
+  margin-top: 0.5rem;
+  height: 4px;
+  border-radius: 2px;
+  background: #e2e8f0;
+  overflow: hidden;
+  
+  .strength-bar {
+    height: 100%;
+    width: 0;
+    transition: width 0.3s, background-color 0.3s;
+    
+    &.weak {
+      width: 33%;
+      background-color: #ef4444;
+    }
+    
+    &.medium {
+      width: 66%;
+      background-color: #f59e0b;
+    }
+    
+    &.strong {
+      width: 100%;
+      background-color: #10b981;
+    }
+  }
+}
+
+// Focus styles for accessibility
+input:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+// Custom checkbox for "Remember me" (if added later)
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #667eea;
+  }
+  
+  label {
+    cursor: pointer;
+    font-weight: normal;
+    
+    &::before {
+      display: none;
+    }
+  }
+}
+
+// Success animation for redirect (optional)
+@keyframes successPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.success {
+  animation: successPulse 0.5s ease-out;
+}

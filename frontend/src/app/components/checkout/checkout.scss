@@ -1,0 +1,548 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+// Header styles
+header {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  
+  h1 {
+    position: relative;
+    animation: slideInLeft 0.5s ease-out;
+    
+    &::before {
+      content: '🔒';
+      margin-right: 10px;
+      font-size: 1.2rem;
+      opacity: 0;
+      animation: fadeIn 0.3s ease-out 0.2s forwards;
+    }
+  }
+  
+  .text-gray-400 {
+    animation: fadeIn 0.5s ease-out;
+  }
+}
+
+// Main container animations
+.max-w-4xl {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+// Card styles
+.bg-white {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15);
+    
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+}
+
+// Form styles
+form {
+  .space-y-4 > div {
+    animation: fadeInUp 0.4s ease-out;
+    animation-fill-mode: both;
+    
+    @for $i from 1 through 6 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.05}s;
+      }
+    }
+  }
+}
+
+// Form field styles
+label {
+  font-weight: 500;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  
+  &::before {
+    content: '📋';
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+  
+  // Remove emoji for specific fields
+  &:has(+ input[formControlName="cardNumber"])::before {
+    content: '💳';
+  }
+  
+  &:has(+ input[formControlName="guestName"])::before {
+    content: '👤';
+  }
+  
+  &:has(+ input[formControlName="phoneNumber"])::before {
+    content: '📱';
+  }
+}
+
+input {
+  transition: all 0.2s;
+  background-color: #ffffff;
+  
+  &:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  }
+  
+  &:hover:not(:focus) {
+    border-color: #94a3b8;
+  }
+  
+  // Invalid state styling
+  &.ng-invalid.ng-touched {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+  }
+  
+  // Valid state styling
+  &.ng-valid.ng-touched {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+  }
+}
+
+// Credit card input styling
+input[formControlName="cardNumber"] {
+  letter-spacing: 1px;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  
+  &::placeholder {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: normal;
+  }
+}
+
+// Date inputs
+input[type="date"] {
+  position: relative;
+  
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background-color: #e2e8f0;
+    }
+  }
+}
+
+// Submit button
+button[type="submit"] {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+    
+    &::before {
+      width: 300px;
+      height: 300px;
+    }
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// Booking summary card
+.bg-blue-50 {
+  position: relative;
+  animation: slideInRight 0.5s ease-out;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  
+  h3 {
+    position: relative;
+    
+    &::before {
+      content: '📊';
+      margin-right: 8px;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+// Price display
+.text-green-600 {
+  position: relative;
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+  
+  &::after {
+    content: '₫';
+    margin-left: 2px;
+  }
+}
+
+// Booking confirmation state
+.text-center.py-10 {
+  animation: fadeInUp 0.5s ease-out;
+  
+  .text-5xl {
+    animation: bounce 0.6s ease-out;
+    display: inline-block;
+  }
+  
+  h2 {
+    animation: slideInUp 0.4s ease-out;
+  }
+  
+  p {
+    animation: fadeIn 0.5s ease-out 0.2s forwards;
+    opacity: 0;
+  }
+  
+  a {
+    display: inline-block;
+    animation: fadeIn 0.5s ease-out 0.4s forwards;
+    opacity: 0;
+    position: relative;
+    
+    &::after {
+      content: '→';
+      margin-left: 5px;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+    
+    &:hover::after {
+      transform: translateX(4px);
+    }
+  }
+}
+
+// Error message styles (add these to your form if needed)
+.error-message {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  animation: shake 0.3s ease-out;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .max-w-4xl {
+    padding: 0 1rem;
+  }
+  
+  .grid {
+    gap: 1rem;
+  }
+  
+  .bg-white,
+  .bg-blue-50 {
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 1.25rem;
+  }
+  
+  .text-xl {
+    font-size: 1.125rem;
+  }
+  
+  button[type="submit"] {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  input, label {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .md\\:col-span-2 {
+    order: 1;
+  }
+  
+  .bg-blue-50 {
+    order: 2;
+    margin-top: 1rem;
+  }
+  
+  header .max-w-4xl {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}
+
+// Loading state (if needed)
+.loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.7;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #10b981;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    transform: translate(-50%, -50%);
+  }
+}
+
+// Print styles
+@media print {
+  :host {
+    background: white;
+  }
+  
+  button,
+  header .text-gray-400,
+  .bg-blue-50::before {
+    display: none;
+  }
+  
+  .bg-white,
+  .bg-blue-50 {
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+    break-inside: avoid;
+  }
+  
+  input {
+    border: none;
+    padding: 0;
+  }
+  
+  form {
+    break-inside: avoid;
+  }
+}
+
+// Animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+// Custom styles for form validation feedback
+input.ng-invalid.ng-touched + .error-hint {
+  display: block;
+}
+
+.error-hint {
+  display: none;
+  color: #ef4444;
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+}
+
+// Focus visible for accessibility
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+// Smooth scrolling
+html {
+  scroll-behavior: smooth;
+}
+
+// Custom checkbox/radio styles (if needed)
+.custom-checkbox {
+  appearance: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid #cbd5e1;
+  border-radius: 4px;
+  transition: all 0.2s;
+  position: relative;
+  cursor: pointer;
+  
+  &:checked {
+    background-color: #10b981;
+    border-color: #10b981;
+    
+    &::after {
+      content: '✓';
+      position: absolute;
+      color: white;
+      font-size: 0.8rem;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+}
