@@ -130,3 +130,38 @@
 [INFO] 2026-04-05T08:55:29.882Z - --- Logger Initialized ---
 [INFO] 2026-04-05T08:56:09.921Z - --- Logger Initialized ---
 [INFO] 2026-04-05T08:57:46.861Z - [AFFILIATE TRACKING] Outbound click to Trip.com | Hotel ID: TRIP-5014 | Price: 1000000 VND
+[INFO] 2026-04-05T09:01:59.840Z - --- Logger Initialized ---
+[INFO] 2026-04-05T09:03:29.603Z - [AFFILIATE TRACKING] Outbound click to Expedia | Hotel ID: EXP-8276 | Price: 1925000 VND
+[INFO] 2026-04-05T09:16:02.507Z - --- Logger Initialized ---
+[INFO] 2026-04-05T09:17:04.674Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1015 | Price: 942980 VND
+[INFO] 2026-04-05T09:18:07.801Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1015 | Price: 942980 VND
+[INFO] 2026-04-05T09:44:10.407Z - --- Logger Initialized ---
+[INFO] 2026-04-05T09:48:18.229Z - --- Logger Initialized ---
+[INFO] 2026-04-05T09:49:38.822Z - --- Logger Initialized ---
+[INFO] 2026-04-05T09:49:51.061Z - --- Logger Initialized ---
+[INFO] 2026-04-05T09:50:12.590Z - --- Logger Initialized ---
+[INFO] 2026-04-05T09:52:17.365Z - --- Logger Initialized ---
+[INFO] 2026-04-05T10:26:28.461Z - [AFFILIATE TRACKING] Outbound click to Trip.com | Hotel ID: TRIP-6162 | Price: 875000 VND
+[INFO] 2026-04-05T10:35:21.451Z - --- Logger Initialized ---
+[INFO] 2026-04-05T10:39:31.173Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-2899 | Price: 803185 VND
+[INFO] 2026-04-05T10:40:32.624Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T10:43:24.783Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T10:44:42.034Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T11:14:21.470Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T12:40:50.792Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T12:40:50.816Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T12:51:38.250Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T12:52:21.205Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T12:53:54.074Z - [AFFILIATE TRACKING] Outbound click to Trip.com | Hotel ID: TRIP-5323 | Price: 950000 VND
+[INFO] 2026-04-05T13:15:34.871Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T13:18:12.215Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T13:20:12.222Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T13:24:20.454Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T13:24:29.785Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T13:30:34.306Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T13:30:58.157Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T13:36:46.924Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1310 | Price: 882280 VND
+[INFO] 2026-04-05T13:41:18.179Z - --- Logger Initialized ---
+[INFO] 2026-04-05T13:43:37.957Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1309 | Price: 866480 VND
+[INFO] 2026-04-05T13:45:53.446Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1309 | Price: 866480 VND
+[INFO] 2026-04-05T13:46:09.099Z - [AFFILIATE TRACKING] Outbound click to Agoda | Hotel ID: AG-1309 | Price: 866480 VND

@@ -1,58 +1,240 @@
-<div class="max-w-6xl mx-auto p-6 font-sans">
-  <div class="flex justify-between items-center mb-8 border-b pb-4">
+<div class="max-w-6xl mx-auto p-6 font-sans min-h-[70vh]">
+  <div class="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
     <div>
-      <h1 class="text-3xl font-bold text-gray-800">My Dashboard</h1>
-      <p class="text-gray-500 mt-1">Manage your tracked hotels and price drops.</p>
+      <h1 class="text-3xl font-black text-gray-900 tracking-tight">My Dashboard</h1>
+      <p class="text-gray-500 mt-1 font-medium">Manage your upcoming trips and price alerts.</p>
     </div>
-    <div class="bg-blue-50 px-4 py-2 rounded-lg text-blue-800 font-semibold">
+    <div
+      class="bg-blue-50 px-4 py-2 rounded-xl text-blue-800 font-bold border border-blue-100 shadow-sm"
+    >
       👤 {{ userEmail }}
     </div>
   </div>
 
-  <div *ngIf="isLoading" class="text-center py-10 text-gray-500">Loading your saved alerts...</div>
-
-  <div
-    *ngIf="!isLoading && trackedHotels.length === 0"
-    class="text-center py-16 bg-gray-50 rounded-xl border border-dashed"
-  >
-    <div class="text-4xl mb-3">📭</div>
-    <h3 class="text-xl font-bold text-gray-700">No price alerts yet</h3>
-    <p class="text-gray-500 mt-2">
-      Go to the search page and click "Track Price Drop" on a hotel to see it here.
-    </p>
+  <div class="flex gap-6 border-b border-gray-200 mb-8">
+    <button
+      (click)="setTab('bookings')"
+      [class.border-blue-600]="activeTab === 'bookings'"
+      [class.text-blue-600]="activeTab === 'bookings'"
+      [class.text-gray-500]="activeTab !== 'bookings'"
+      class="pb-3 border-b-2 font-bold text-lg transition-colors hover:text-blue-600 focus:outline-none"
+    >
+      🧳 My Bookings
+    </button>
+    <button
+      (click)="setTab('alerts')"
+      [class.border-blue-600]="activeTab === 'alerts'"
+      [class.text-blue-600]="activeTab === 'alerts'"
+      [class.text-gray-500]="activeTab !== 'alerts'"
+      class="pb-3 border-b-2 font-bold text-lg transition-colors hover:text-blue-600 focus:outline-none"
+    >
+      🔔 Price Alerts
+    </button>
   </div>
 
-  <div *ngIf="!isLoading && trackedHotels.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div
-      *ngFor="let alert of trackedHotels"
-      class="bg-white border rounded-xl p-6 shadow-sm flex flex-col justify-between hover:shadow transition"
-    >
-      <div>
-        <div class="flex justify-between items-start mb-4">
-          <div>
-            <p class="text-xs text-orange-500 font-bold uppercase tracking-wide mb-1">
-              Status: Tracking ⏳
-            </p>
-            <h2 class="text-xl font-bold text-gray-800">Hotel ID: {{ alert.hotel_id }}</h2>
-          </div>
-          <button
-            (click)="removeAlert(alert.alert_id)"
-            class="text-gray-400 hover:text-red-500 transition"
+  @if (activeTab === 'bookings') {
+    @if (bookedHotels.length === 0) {
+      <div
+        class="text-center py-16 bg-white rounded-2xl border border-dashed border-gray-300 shadow-sm"
+      >
+        <div class="text-5xl mb-4">🏝️</div>
+        <h3 class="text-xl font-bold text-gray-800">No upcoming trips</h3>
+        <p class="text-gray-500 mt-2">
+          Time to pack your bags! Start searching to book your next adventure.
+        </p>
+        <a
+          routerLink="/search"
+          class="inline-block mt-4 px-6 py-2 bg-blue-600 text-white font-bold rounded-lg shadow hover:bg-blue-700 transition"
+          >Search Hotels</a
+        >
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @for (booking of bookedHotels; track booking.bookingId) {
+          <div
+            class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between"
           >
-            ✖ Remove
-          </button>
-        </div>
+            <div>
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <span
+                    class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-black uppercase tracking-wider rounded-lg mb-2"
+                  >
+                    {{ booking.status }}
+                  </span>
+                  <h2 class="text-xl font-bold text-gray-900 leading-tight">
+                    {{ booking.hotelName }}
+                  </h2>
+                  <p class="text-sm text-gray-500 mt-1 font-medium">
+                    Booked via {{ booking.provider }}
+                  </p>
+                </div>
+                <div class="text-right">
+                  <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">
+                    Total Paid
+                  </p>
+                  <p class="text-lg font-black text-green-600">
+                    {{ booking.totalPrice | number }} ₫
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="bg-gray-50 rounded-xl p-4 mt-4 border border-gray-100 flex justify-between items-center"
+              >
+                <div>
+                  <p class="text-xs text-gray-500 uppercase font-bold mb-1">Check-in</p>
+                  <p class="font-bold text-gray-900">{{ booking.checkIn }}</p>
+                </div>
+                <div class="text-gray-300 font-black text-xl">→</div>
+                <div class="text-right">
+                  <p class="text-xs text-gray-500 uppercase font-bold mb-1">Check-out</p>
+                  <p class="font-bold text-gray-900">{{ booking.checkOut }}</p>
+                </div>
+              </div>
+              <div class="mt-4 text-xs text-gray-400 font-medium border-b border-gray-100 pb-4">
+                Booking Ref: {{ booking.bookingId }}
+              </div>
+            </div>
+
+            <div class="mt-4 flex gap-3">
+              <button
+                (click)="openEditModal(booking)"
+                class="flex-1 py-2 bg-blue-50 text-blue-700 font-bold rounded-lg hover:bg-blue-100 transition-colors border border-blue-200"
+              >
+                Edit Dates
+              </button>
+              <button
+                (click)="cancelBooking(booking.bookingId)"
+                class="flex-1 py-2 bg-red-50 text-red-600 font-bold rounded-lg hover:bg-red-100 transition-colors border border-red-200"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+
+  @if (activeTab === 'alerts') {
+    @if (isLoadingAlerts) {
+      <div class="text-center py-10 text-gray-500 font-medium animate-pulse">
+        Loading your saved alerts...
+      </div>
+    }
+
+    @if (!isLoadingAlerts && trackedHotels.length === 0) {
+      <div
+        class="text-center py-16 bg-white rounded-2xl border border-dashed border-gray-300 shadow-sm"
+      >
+        <div class="text-5xl mb-4">📭</div>
+        <h3 class="text-xl font-bold text-gray-800">No price alerts yet</h3>
+        <p class="text-gray-500 mt-2">
+          Go to the search page and click "Alert" on a hotel to see it here.
+        </p>
+      </div>
+    }
+
+    @if (!isLoadingAlerts && trackedHotels.length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @for (alert of trackedHotels; track alert.alert_id) {
+          <div
+            class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition"
+          >
+            <div>
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <p
+                    class="text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded-md inline-block font-bold uppercase tracking-wide mb-2"
+                  >
+                    Status: Tracking ⏳
+                  </p>
+                  <h2 class="text-xl font-bold text-gray-800">Hotel ID: {{ alert.hotel_id }}</h2>
+                </div>
+                <button
+                  (click)="removeAlert(alert.alert_id)"
+                  class="text-gray-400 hover:text-red-600 bg-gray-50 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                  title="Remove Alert"
+                >
+                  ✖
+                </button>
+              </div>
+            </div>
+            <div
+              class="mt-4 border-t border-gray-100 bg-gray-50 p-4 rounded-xl flex justify-between items-center"
+            >
+              <div>
+                <p class="text-sm text-gray-500 font-medium mb-1">Target Price</p>
+                <p class="text-2xl font-black text-gray-900">
+                  {{ alert.target_price | currency: 'VND' : 'symbol' : '1.0-0' }}
+                </p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
+
+@if (isEditModalOpen) {
+  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div
+      class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+      (click)="closeEditModal()"
+    ></div>
+    <div class="relative bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+      <div class="bg-blue-900 p-6 text-white">
+        <h2 class="text-2xl font-black flex items-center gap-2"><span>📅</span> Edit Booking</h2>
+        <p class="text-blue-200 text-sm mt-1">{{ selectedBooking?.hotelName }}</p>
       </div>
 
-      <div class="mt-4 pt-4 border-t bg-gray-50 p-4 rounded-lg flex justify-between items-center">
-        <div>
-          <p class="text-sm text-gray-500">Your Target Price</p>
-          <p class="text-2xl font-bold text-green-600">{{ alert.target_price | number }} ₫</p>
-        </div>
-        <div class="text-right">
-          <p class="text-xs text-gray-400">Alert ID: #{{ alert.alert_id }}</p>
-        </div>
+      <div class="p-6">
+        <form [formGroup]="editForm" (ngSubmit)="saveBookingChanges()" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-1">Check-in</label>
+              <input
+                type="date"
+                formControlName="checkIn"
+                [min]="minDate"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-1">Check-out</label>
+              <input
+                type="date"
+                formControlName="checkOut"
+                [min]="editForm.get('checkIn')?.value || minDate"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none"
+              />
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 mt-2 font-medium">
+            Note: Changing dates will automatically recalculate your total price based on the
+            original nightly rate.
+          </p>
+
+          <div class="flex gap-3 mt-8">
+            <button
+              type="button"
+              (click)="closeEditModal()"
+              class="flex-1 py-3 px-4 bg-white border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              [disabled]="editForm.invalid"
+              class="flex-1 py-3 px-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 shadow-md"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-</div>
+}

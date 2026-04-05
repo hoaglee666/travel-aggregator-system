@@ -11,6 +11,29 @@
       <div *ngIf="!isBooked">
         <h2 class="text-xl font-bold mb-6 text-gray-800">Booking Details</h2>
         <form [formGroup]="checkoutForm" (ngSubmit)="onConfirmBooking()" class="space-y-4">
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-blue-50/50 p-4 rounded-xl border border-blue-100 mb-6"
+          >
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-1">Check-in Date</label>
+              <input
+                type="date"
+                formControlName="checkInDate"
+                [min]="minDate"
+                class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none text-gray-700 font-medium"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-1">Check-out Date</label>
+              <input
+                type="date"
+                formControlName="checkOutDate"
+                [min]="checkoutForm.get('checkInDate')?.value || minDate"
+                class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none text-gray-700 font-medium"
+              />
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Lead Guest Name</label>
@@ -18,54 +41,97 @@
                 type="text"
                 formControlName="guestName"
                 class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none"
+                [ngClass]="{
+                  'border-red-500':
+                    checkoutForm.get('guestName')?.invalid &&
+                    checkoutForm.get('guestName')?.touched,
+                }"
               />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
               <input
-                type="text"
+                type="tel"
+                maxlength="10"
                 formControlName="phoneNumber"
-                class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none"
+                class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none transition-colors"
+                [ngClass]="{
+                  'border-red-500 focus:ring-red-500':
+                    checkoutForm.get('phoneNumber')?.invalid &&
+                    checkoutForm.get('phoneNumber')?.touched,
+                }"
               />
+
+              @if (
+                checkoutForm.get('phoneNumber')?.errors?.['pattern'] &&
+                checkoutForm.get('phoneNumber')?.touched
+              ) {
+                <p class="text-red-500 text-xs mt-1 font-medium">
+                  Please enter a valid 10-11 digit phone number.
+                </p>
+              }
+              @if (
+                checkoutForm.get('phoneNumber')?.errors?.['profileMismatch'] &&
+                checkoutForm.get('phoneNumber')?.touched
+              ) {
+                <p class="text-red-500 text-xs mt-1 font-medium">
+                  This number does not match your registered profile.
+                </p>
+              }
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Check-in Date</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
               <input
-                type="date"
-                formControlName="checkInDate"
+                type="email"
+                formControlName="email"
                 class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none"
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Check-out Date</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Card Number (16 Digits)</label
+              >
               <input
-                type="date"
-                formControlName="checkOutDate"
-                class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none"
+                type="text"
+                formControlName="cardNumber"
+                maxlength="16"
+                placeholder="1234567890123456"
+                class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none transition-colors"
+                [ngClass]="{
+                  'border-red-500 focus:ring-red-500':
+                    checkoutForm.get('cardNumber')?.invalid &&
+                    checkoutForm.get('cardNumber')?.touched,
+                }"
               />
-            </div>
-          </div>
 
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Credit Card Number</label>
-            <input
-              type="text"
-              formControlName="cardNumber"
-              maxlength="16"
-              class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 outline-none font-mono"
-            />
-            <p class="text-xs text-gray-400 mt-1">Drawn from your profile balance.</p>
+              @if (
+                checkoutForm.get('cardNumber')?.errors?.['pattern'] &&
+                checkoutForm.get('cardNumber')?.touched
+              ) {
+                <p class="text-red-500 text-xs mt-1 font-medium">
+                  Must be exactly 16 digits (numbers only).
+                </p>
+              }
+              @if (
+                checkoutForm.get('cardNumber')?.errors?.['profileMismatch'] &&
+                checkoutForm.get('cardNumber')?.touched
+              ) {
+                <p class="text-red-500 text-xs mt-1 font-medium">
+                  This card does not match your registered profile.
+                </p>
+              }
+            </div>
           </div>
 
           <button
             type="submit"
             [disabled]="checkoutForm.invalid"
-            class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg mt-6 transition duration-200 disabled:opacity-50"
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg mt-6 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
           >
-            Confirm & Pay {{ price | number }} ₫
+            Confirm & Pay {{ totalPrice | number }} ₫
           </button>
         </form>
       </div>
@@ -85,11 +151,16 @@
     <div class="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-100 h-fit">
       <h3 class="font-bold text-gray-800 border-b pb-2 mb-4">Booking Summary</h3>
       <p class="text-lg font-semibold text-gray-800 mb-1">{{ hotelName }}</p>
-      <p class="text-sm text-gray-500 mb-4">Provided by {{ provider }}</p>
+      <p class="text-sm text-gray-500 mb-4">{{ nights }} night(s)</p>
 
-      <div class="flex justify-between items-center pt-4 border-t border-blue-200">
-        <span class="font-semibold text-gray-700">Total Price: </span>
-        <span class="text-xl font-bold text-green-600">{{ price | number }} ₫</span>
+      <div class="flex justify-between items-center text-sm mb-2">
+        <span class="text-gray-600">Price per night</span>
+        <span class="font-medium">{{ pricePerNight | number }} ₫</span>
+      </div>
+
+      <div class="border-t pt-3 mt-3 flex justify-between items-center">
+        <span class="font-bold text-gray-800">Total</span>
+        <span class="font-bold text-xl text-green-600">{{ totalPrice | number }} ₫</span>
       </div>
     </div>
   </div>

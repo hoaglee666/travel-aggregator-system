@@ -64,23 +64,31 @@ export class RegisterComponent {
     this.errorMessage = '';
     this.successMessage = '';
 
-    // Extract values, dropping confirmPassword before sending to the backend
-    const { fullName, email, password } = this.registerForm.value;
+    // 1. Extract ALL necessary values from the form
+    const { fullName, email, password, phoneNumber, creditCard } = this.registerForm.value;
 
-    this.authService.register({ fullName, email, password }).subscribe({
-      next: (res) => {
-        this.isLoading = false;
-        this.successMessage = 'Registration successful! Redirecting to login...';
+    // 2. Map them to the keys your backend/localStorage expects
+    this.authService
+      .register({
+        fullName,
+        email,
+        password,
+        phone_number: phoneNumber, // Added!
+        credit_card: creditCard, // Added!
+      })
+      .subscribe({
+        next: (res) => {
+          this.isLoading = false;
+          this.successMessage = 'Registration successful! Redirecting to login...';
 
-        // Wait 2 seconds so they can read the success message, then redirect
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 2000);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = err.error.message || 'Registration failed. Please try again.';
-      },
-    });
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 2000);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.errorMessage = err.error?.message || 'Registration failed. Please try again.';
+        },
+      });
   }
 }

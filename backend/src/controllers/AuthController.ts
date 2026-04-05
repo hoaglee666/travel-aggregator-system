@@ -113,6 +113,9 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         email: user.email,
         fullName: user.full_name,
         role: userRole,
+        // ✅ NEW: Send the secure data back to the frontend!
+        phone_number: user.phone_number,
+        credit_card: user.credit_card,
       },
     });
   } catch (error) {

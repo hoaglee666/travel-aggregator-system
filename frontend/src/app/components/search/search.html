@@ -42,11 +42,13 @@
       <div class="flex gap-2 flex-1 relative">
         <input
           type="date"
+          [min]="minDate"
           formControlName="checkIn"
           class="w-1/2 px-3 py-4 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent font-medium text-sm"
         />
         <input
           type="date"
+          [min]="searchForm.get('checkIn')?.value || minDate"
           formControlName="checkOut"
           class="w-1/2 px-3 py-4 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent font-medium text-sm"
         />
@@ -169,21 +171,90 @@
           <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
             <div>
               <div class="flex justify-between items-start gap-4">
-                <h3 class="text-xl font-bold text-gray-900 leading-tight">{{ hotel.name }}</h3>
+                <h3
+                  class="text-xl font-bold text-gray-900 leading-tight hover:text-blue-600 transition-colors cursor-pointer"
+                >
+                  {{ hotel.name }}
+                </h3>
                 <div
                   class="bg-blue-900 text-white px-2 py-1 rounded-md text-sm font-bold flex items-center gap-1 shrink-0 shadow-sm"
                 >
                   {{ hotel.rating }}
                 </div>
               </div>
-              <div class="flex text-yellow-400 mt-2">
-                @for (star of [1, 2, 3, 4, 5]; track star) {
-                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path
-                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                    />
-                  </svg>
-                }
+
+              <div class="flex items-center gap-3 mt-2">
+                <div class="flex text-yellow-400">
+                  @for (star of [1, 2, 3, 4, 5]; track star) {
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                      />
+                    </svg>
+                  }
+                </div>
+                <span class="text-sm text-blue-600 font-medium underline cursor-pointer">{{
+                  hotel.destination
+                }}</span>
+              </div>
+
+              <div class="mt-4 space-y-2">
+                <div class="flex flex-wrap items-center gap-4 text-sm text-gray-700 font-medium">
+                  <div
+                    class="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md border border-gray-200"
+                  >
+                    <span class="text-lg">🛏️</span> {{ hotel.bedType || 'Standard Room' }}
+                  </div>
+                  <div
+                    class="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md border border-gray-200"
+                  >
+                    <span class="text-lg">👥</span> Sleeps {{ hotel.maxOccupancy || 2 }}
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-1 mt-3">
+                  @if (hotel.freeCancellation) {
+                    <div class="flex items-center gap-1.5 text-green-600 font-bold text-sm">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      Free Cancellation
+                    </div>
+                  } @else {
+                    <div class="flex items-center gap-1.5 text-gray-500 font-medium text-sm">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      Non-refundable
+                    </div>
+                  }
+
+                  @if (hotel.roomsLeft === 0) {
+                    <div class="text-gray-500 font-black text-sm flex items-center gap-1 mt-1">
+                      <span>🚫</span> Fully Booked / No rooms left
+                    </div>
+                  } @else if (hotel.roomsLeft <= 3) {
+                    <div
+                      class="text-red-600 font-black text-sm animate-pulse flex items-center gap-1 mt-1"
+                    >
+                      <span>🔥</span> Only {{ hotel.roomsLeft }} rooms left at this price
+                    </div>
+                  } @else {
+                    <div class="text-green-700 font-bold text-sm flex items-center gap-1 mt-1">
+                      <span>✓</span> {{ hotel.roomsLeft }} rooms available
+                    </div>
+                  }
+                </div>
               </div>
             </div>
 
@@ -192,7 +263,7 @@
             >
               <div>
                 <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">
-                  Total Price
+                  Price per night
                 </p>
                 <p class="text-2xl font-black text-gray-900">
                   {{ hotel.price | currency: 'VND' : 'symbol' : '1.0-0' }}
@@ -207,9 +278,14 @@
                 </button>
                 <button
                   (click)="onViewDeal(hotel)"
-                  class="flex-1 sm:flex-none px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition-colors"
+                  [disabled]="hotel.roomsLeft === 0"
+                  class="flex-1 sm:flex-none px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold rounded-xl shadow-md transition-colors"
                 >
-                  View Deal
+                  @if (hotel.roomsLeft === 0) {
+                    Sold Out
+                  } @else {
+                    View Deal
+                  }
                 </button>
               </div>
             </div>
